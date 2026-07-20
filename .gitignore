@@ -39,3 +39,16 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local verification / frame extraction tooling
+.verify/
+
+# Oversized project films (>100MB) — compress or move to Vimeo before committing
+public/media/projects/woonboerderij/film.mp4
+public/media/projects/boost-innovation-grant/film.mp4
+public/media/projects/roxmeister/film.mp4
+
+# Brand intermediates
+public/media/brand/*.original.jpg
+public/media/brand/wordmark-*-master.png
+public/media/brand/wordmark-*-transparent.png

@@ -1,26 +1,163 @@
 @import "tailwindcss";
 
+/* ------------------------------------------------------------------
+   Design tokens — the single source of truth for the visual identity.
+   Change colours, type, radii and motion here and the whole site follows.
+   ------------------------------------------------------------------ */
+@theme {
+  /* Palette — warm near-black, warm off-white, one ember accent */
+  --color-ink: #0c0a08;
+  --color-ink-2: #141109;
+  --color-ink-3: #1e1a14;
+  --color-bone: #f0eae0;
+  --color-stone: #aaa196;
+  --color-ember: #e7752f;
+  --color-ember-deep: #b4491a;
+  --color-line: rgba(240, 234, 224, 0.14);
+  --color-line-strong: rgba(240, 234, 224, 0.28);
+
+  /* Typography */
+  --font-sans: var(--font-archivo), system-ui, sans-serif;
+  --font-serif: var(--font-fraunces), georgia, serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+  /* Fluid editorial type scale */
+  --text-display: clamp(2.9rem, 9vw, 8.5rem);
+  --text-display--line-height: 0.95;
+  --text-display--letter-spacing: -0.03em;
+  --text-h1: clamp(2.4rem, 6.5vw, 5.5rem);
+  --text-h1--line-height: 1;
+  --text-h1--letter-spacing: -0.025em;
+  --text-h2: clamp(1.9rem, 4.5vw, 3.6rem);
+  --text-h2--line-height: 1.05;
+  --text-h2--letter-spacing: -0.02em;
+  --text-h3: clamp(1.35rem, 2.4vw, 2rem);
+  --text-h3--line-height: 1.15;
+  --text-h3--letter-spacing: -0.01em;
+  --text-lead: clamp(1.1rem, 1.6vw, 1.45rem);
+  --text-lead--line-height: 1.45;
+  --text-meta: 0.72rem;
+  --text-meta--line-height: 1.4;
+  --text-meta--letter-spacing: 0.14em;
+
+  /* Section rhythm */
+  --spacing-section: clamp(5.5rem, 13vh, 11rem);
+  --spacing-gutter: clamp(1.25rem, 4vw, 4rem);
+
+  /* Radii — editorial, mostly sharp */
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 10px;
+  --radius-lg: 20px;
+
+  /* Motion */
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out-soft: cubic-bezier(0.65, 0.05, 0.36, 1);
+  --duration-fast: 300ms;
+  --duration-base: 600ms;
+  --duration-slow: 1000ms;
+
+  --animate-marquee: marquee 36s linear infinite;
+
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: dark;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+html {
+  scroll-behavior: smooth;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-ink);
+  color: var(--color-bone);
+  font-family: var(--font-sans);
+  overflow-x: clip;
+  min-height: 100dvh;
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+::selection {
+  background: var(--color-ember);
+  color: var(--color-ink);
+}
+
+/* Visible, brand-consistent focus */
+:focus-visible {
+  outline: 2px solid var(--color-ember);
+  outline-offset: 3px;
+  border-radius: var(--radius-xs);
+}
+
+/* Subtle film grain across the whole experience */
+.grain::after {
+  content: "";
+  position: fixed;
+  inset: -50%;
+  z-index: 90;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Utility: comfortable measure for editorial paragraphs */
+.measure {
+  max-width: 38em;
+}
+
+.measure-narrow {
+  max-width: 28em;
+}
+
+/* Outlined display type used on hover states */
+.text-outline {
+  -webkit-text-stroke: 1px var(--color-bone);
+  color: transparent;
+}
+
+/* Slow drift for the hero's placeholder composition */
+@keyframes hero-drift {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(-2.5%, -1.5%, 0) scale(1.05);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+.hero-drift {
+  animation: hero-drift 24s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-drift {
+    animation: none;
+  }
+}
+
+/* Hide scrollbars on horizontal strips without disabling scroll */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
