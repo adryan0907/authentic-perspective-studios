@@ -438,6 +438,117 @@ export const projects: Project[] = [
   },
 
   {
+    slug: "photography-press-fashion",
+    title: "Press & Fashion",
+    year: 2025,
+    status: "commission",
+    featured: true,
+    discipline: "photography",
+    categories: ["brand-content", "events"],
+    categoryLabel: "Press Kit / Fashion Photography",
+    services: [
+      "DJ Press Kits",
+      "Fashion & Streetwear",
+      "Editorial Portraits",
+      "Lifestyle Photography",
+    ],
+    location: "Netherlands",
+    description:
+      "Selected photography — DJ press kits, streetwear and fashion portraits shot for artists and brands.",
+    summary:
+      "A growing selection of stills from press and fashion work: artist portraits, group looks, and lifestyle frames built for releases, campaigns and social kits. More series (including Frenky backpack and Bylin) will land here as they wrap.",
+    challenge:
+      "Press and fashion images need to feel editorial and usable — strong enough for a cover, clean enough for a kit, and consistent enough to hold a brand together across platforms.",
+    approach:
+      "Natural light where it serves the subject, deliberate framing for crop flexibility, and a mix of colour and black-and-white finishes depending on the brief — from streetwear action to quiet portraiture.",
+    outcome:
+      "A live selection of press and fashion frames on the studio site, with room to expand as new product and brand series are delivered.",
+    cover: {
+      type: "image",
+      src: "/media/projects/photography-press-fashion/cover.webp",
+      alt: "Black-and-white press portrait of a man in a hoodie against a soft outdoor backdrop",
+      aspect: "4/5",
+    },
+    heroMedia: {
+      type: "image",
+      src: "/media/projects/photography-press-fashion/hero.webp",
+      alt: "Three people in dark streetwear on a train platform under overhead wires",
+      aspect: "3/2",
+    },
+    gallery: [
+      {
+        type: "image",
+        src: "/media/projects/photography-press-fashion/frame-01.webp",
+        alt: "Two skaters in streetwear posing outdoors with boards",
+        caption: "Lifestyle — streetwear duo",
+        aspect: "4/5",
+      },
+      {
+        type: "image",
+        src: "/media/projects/photography-press-fashion/frame-02.webp",
+        alt: "Skater carving on a paved track with a blue stripe",
+        caption: "Action — streetwear in motion",
+        aspect: "4/5",
+      },
+      {
+        type: "image",
+        src: "/media/projects/photography-press-fashion/frame-03.webp",
+        alt: "Back of a Puin Collective t-shirt in an industrial urban setting",
+        caption: "Brand detail — Puin Collective",
+        aspect: "3/2",
+      },
+      {
+        type: "image",
+        src: "/media/projects/photography-press-fashion/frame-04.webp",
+        alt: "Fashion group frame from a press and streetwear session",
+        caption: "Press kit — group look",
+        aspect: "3/2",
+      },
+      {
+        type: "image",
+        src: "/media/projects/photography-press-fashion/frame-05.webp",
+        alt: "Three people in dark streetwear on a train platform under overhead wires",
+        caption: "Editorial — platform group",
+        aspect: "3/2",
+      },
+      {
+        type: "image",
+        src: "/media/projects/photography-press-fashion/frame-06.webp",
+        alt: "Black-and-white press portrait of a man in a hoodie",
+        caption: "Press portrait",
+        aspect: "4/5",
+      },
+      {
+        type: "image",
+        src: "/media/projects/photography-press-fashion/frame-07.webp",
+        alt: "Fashion portrait from a press and streetwear session",
+        caption: "Fashion portrait",
+        aspect: "4/5",
+      },
+      {
+        type: "image",
+        src: "/media/projects/photography-press-fashion/frame-08.webp",
+        alt: "Black-and-white fashion portrait of a woman in a ribbed tank top",
+        caption: "Fashion portrait",
+        aspect: "4/5",
+      },
+      {
+        type: "image",
+        src: "/media/projects/photography-press-fashion/frame-09.webp",
+        alt: "Portrait frame from a DJ press and fashion session",
+        caption: "Press / fashion",
+        aspect: "4/5",
+      },
+    ],
+    credits: [
+      { role: "Photography", name: "Authentic Perspective" },
+    ],
+    seoDescription:
+      "Press kit and fashion photography by Authentic Perspective — DJ portraits, streetwear and editorial stills.",
+    placeholderPalette: ["#1a1a1a", "#0a0a0a"],
+  },
+
+  {
     slug: "losjes-encore",
     title: "Losjes / Encore",
     year: 2023,

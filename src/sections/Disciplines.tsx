@@ -120,6 +120,54 @@ const filmFrames = [
   },
 ];
 
+const photoFrames = [
+  {
+    src: "/media/projects/photography-press-fashion/frame-01.webp",
+    alt: "Two skaters in streetwear posing outdoors with boards",
+    label: "Lifestyle",
+  },
+  {
+    src: "/media/projects/photography-press-fashion/frame-02.webp",
+    alt: "Skater carving on a paved track",
+    label: "Action",
+  },
+  {
+    src: "/media/projects/photography-press-fashion/frame-03.webp",
+    alt: "Puin Collective t-shirt brand detail",
+    label: "Brand",
+  },
+  {
+    src: "/media/projects/photography-press-fashion/frame-04.webp",
+    alt: "Fashion group frame from a press session",
+    label: "Press",
+  },
+  {
+    src: "/media/projects/photography-press-fashion/frame-05.webp",
+    alt: "Three people in streetwear on a train platform",
+    label: "Editorial",
+  },
+  {
+    src: "/media/projects/photography-press-fashion/frame-06.webp",
+    alt: "Black-and-white press portrait of a man",
+    label: "Portrait",
+  },
+  {
+    src: "/media/projects/photography-press-fashion/frame-07.webp",
+    alt: "Fashion portrait from a press session",
+    label: "Fashion",
+  },
+  {
+    src: "/media/projects/photography-press-fashion/frame-08.webp",
+    alt: "Black-and-white fashion portrait of a woman",
+    label: "Portrait",
+  },
+  {
+    src: "/media/projects/photography-press-fashion/frame-09.webp",
+    alt: "Portrait from a DJ press and fashion session",
+    label: "Press",
+  },
+];
+
 const disciplines = [
   {
     id: "film",
@@ -130,21 +178,8 @@ const disciplines = [
   {
     id: "photography",
     title: "Photography",
-    copy: "Corporate portraits, campaign photography, lifestyle imagery, events, and visual assets for digital platforms.",
-    visual: (
-      <ContactSheet
-        frames={[
-          "Founder portrait",
-          "Lab detail",
-          "Team candid",
-          "Atrium wide",
-          "Profile backlight",
-          "Whiteboard laugh",
-          "Chip in hand",
-          "Corridor walk",
-        ]}
-      />
-    ),
+    copy: "DJ press kits, fashion and streetwear, editorial portraits, lifestyle imagery, and campaign stills — with more series landing soon.",
+    visual: <ContactSheet frames={photoFrames} />,
   },
   {
     id: "ai",
