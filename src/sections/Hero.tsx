@@ -185,8 +185,8 @@ export function Hero() {
         </motion.div>
       </div>
 
-      {/* Showreel pause control */}
-      <div className="pointer-events-auto absolute right-4 bottom-4 z-20 md:right-8 md:bottom-8">
+      {/* Showreel pause control — desktop only; mobile hero keeps CTAs clean */}
+      <div className="pointer-events-auto absolute right-8 bottom-8 z-20 hidden md:block">
         <button
           type="button"
           onClick={() => setPaused((p) => !p)}
