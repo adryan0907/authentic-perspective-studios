@@ -1,12 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
 import { Filmstrip } from "@/components/media/Filmstrip";
 import { ContactSheet } from "@/components/media/ContactSheet";
+import { ProjectCard } from "@/components/media/ProjectCard";
 import { FadeIn } from "@/components/ui/FadeIn";
+import { getProject } from "@/data/projects";
 import { cx } from "@/lib/utils";
+
+const pwmiProject = getProject("digital-screen-pwmi");
 
 /** Generation slider: rough AI draft on the left, refined frame on the right. */
 function AiGenerationSlider() {
@@ -65,40 +67,6 @@ function AiGenerationSlider() {
   );
 }
 
-/** Digital Screen PWMI featured as the UX discipline visual. */
-function PwmiUxFeature() {
-  return (
-    <Link
-      href="/work/digital-screen-pwmi"
-      data-cursor="View project"
-      className="group block"
-    >
-      <div className="relative aspect-video w-full overflow-hidden">
-        <Image
-          src="/media/projects/digital-screen-pwmi/cover.webp"
-          alt="Digital Screen PWMI — mother and child facing an interactive neighbourhood screen"
-          fill
-          sizes="(min-width: 768px) 50vw, 100vw"
-          className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
-        />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-black/15 to-transparent"
-        />
-        <div className="absolute inset-x-0 bottom-0 flex flex-col gap-1 p-5 md:p-6">
-          <span className="text-bone/85 font-mono text-[0.6rem] tracking-[0.2em] uppercase">
-            <span className="text-ember mr-2">●</span>
-            Digital Screen PWMI
-          </span>
-          <span className="text-bone/55 font-mono text-[0.55rem] tracking-[0.15em] uppercase">
-            UX · Immersive public media
-          </span>
-        </div>
-      </div>
-    </Link>
-  );
-}
-
 const disciplines = [
   {
     id: "film",
@@ -146,13 +114,21 @@ const disciplines = [
     id: "ux",
     title: "UX & Interactive",
     copy: "Digital concepts, websites, user experiences, prototypes, creative technology, and interactive storytelling — like Digital Screen PWMI for public neighbourhood media.",
-    visual: <PwmiUxFeature />,
+    visual: pwmiProject ? (
+      <ProjectCard
+        project={pwmiProject}
+        sizes="(min-width: 768px) 50vw, 100vw"
+      />
+    ) : null,
   },
 ];
 
 export function Disciplines() {
   return (
-    <section aria-labelledby="disciplines-heading" className="px-gutter py-section border-line border-t">
+    <section
+      aria-labelledby="disciplines-heading"
+      className="px-gutter py-section border-line border-t"
+    >
       <FadeIn className="mb-14 md:mb-20">
         <h2
           id="disciplines-heading"
@@ -167,9 +143,7 @@ export function Disciplines() {
           <FadeIn key={discipline.id}>
             <article
               aria-labelledby={`discipline-${discipline.id}`}
-              className={cx(
-                "grid grid-cols-1 items-center gap-8 md:grid-cols-12",
-              )}
+              className="grid grid-cols-1 items-center gap-8 md:grid-cols-12"
             >
               <div
                 className={cx(
@@ -190,7 +164,9 @@ export function Disciplines() {
               <div
                 className={cx(
                   "md:col-span-6",
-                  index % 2 === 1 ? "md:order-1 md:col-start-1" : "md:col-start-7",
+                  index % 2 === 1
+                    ? "md:order-1 md:col-start-1"
+                    : "md:col-start-7",
                 )}
               >
                 {discipline.visual}
