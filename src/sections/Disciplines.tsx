@@ -85,9 +85,9 @@ function PwmiUxReveal() {
             <div className="border-bone/25 mx-auto mt-2 aspect-square w-1/3 rounded-full border border-dashed" />
             <div className="border-bone/25 mx-auto h-3 w-2/5 border border-dashed" />
             <div className="mt-auto grid grid-cols-3 gap-2">
-              <div className="border-bone/25 aspect-[4/5] border border-dashed" />
-              <div className="border-bone/25 aspect-[4/5] border border-dashed" />
-              <div className="border-bone/25 aspect-[4/5] border border-dashed" />
+              <div className="border-bone/25 aspect-4/5 border border-dashed" />
+              <div className="border-bone/25 aspect-4/5 border border-dashed" />
+              <div className="border-bone/25 aspect-4/5 border border-dashed" />
             </div>
           </div>
           <span className="text-bone/45 absolute right-4 bottom-4 font-mono text-[0.55rem] tracking-widest uppercase">
