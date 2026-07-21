@@ -34,7 +34,8 @@ export function Header() {
     <>
       <header
         className={cx(
-          "fixed inset-x-0 top-0 z-[100] transition-colors duration-500",
+          "fixed inset-x-0 top-0 transition-colors duration-500",
+          menuOpen ? "z-[130]" : "z-[100]",
           scrolled || menuOpen
             ? "bg-ink/85 backdrop-blur-md"
             : "bg-transparent",
@@ -43,7 +44,7 @@ export function Header() {
         <div className="px-gutter flex h-16 items-center justify-between gap-6 md:h-20">
           <Link
             href="/"
-            className="relative z-[130] shrink-0"
+            className="relative z-[1] shrink-0"
             aria-label="Authentic Perspective — home"
           >
             {/* eslint-disable-next-line @next/next/no-img-element -- keep alpha intact; next/image was flattening transparent pixels to black */}
@@ -87,20 +88,22 @@ export function Header() {
             onClick={() => setMenuOpen((open) => !open)}
             aria-expanded={menuOpen}
             aria-controls="mobile-menu"
-            className="text-bone relative z-[130] -mr-2 flex h-11 w-11 items-center justify-center md:hidden"
+            className="text-bone relative z-[1] -mr-2 flex h-11 w-11 items-center justify-center md:hidden"
           >
             <span className="sr-only">{menuOpen ? "Close menu" : "Open menu"}</span>
             <span aria-hidden className="relative block h-3 w-6">
               <span
                 className={cx(
-                  "bg-bone absolute left-0 block h-px w-6 transition-transform duration-300",
-                  menuOpen ? "top-1/2 rotate-45" : "top-0",
+                  "bg-bone absolute left-0 block h-0.5 w-6 origin-center transition-transform duration-300",
+                  menuOpen ? "top-1/2 -translate-y-1/2 rotate-45" : "top-0",
                 )}
               />
               <span
                 className={cx(
-                  "bg-bone absolute left-0 block h-px w-6 transition-transform duration-300",
-                  menuOpen ? "top-1/2 -rotate-45" : "bottom-0",
+                  "bg-bone absolute left-0 block h-0.5 w-6 origin-center transition-transform duration-300",
+                  menuOpen
+                    ? "top-1/2 -translate-y-1/2 -rotate-45"
+                    : "bottom-0",
                 )}
               />
             </span>
