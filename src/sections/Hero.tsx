@@ -135,7 +135,7 @@ export function Hero() {
           {...enter(0.1)}
           className="text-meta text-bone/70 mb-6 font-mono tracking-[0.25em] uppercase"
         >
-          Creative production studio — Eindhoven
+          Authentic Perspective Studios — Eindhoven
         </motion.p>
 
         <h1 className="text-display text-bone font-sans font-black uppercase">
@@ -169,9 +169,9 @@ export function Hero() {
           {...enter(0.55)}
           className="text-lead text-bone/80 measure-narrow mt-6"
         >
-          Authentic Perspective is an Eindhoven-based creative studio creating
-          cinematic films, intentional photography, AI-powered concepts, and
-          interactive digital experiences.
+          Authentic Perspective Studios is an Eindhoven-based creative studio
+          creating cinematic films, intentional photography, AI-powered
+          concepts, and interactive digital experiences.
         </motion.p>
 
         <motion.div

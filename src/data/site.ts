@@ -5,10 +5,17 @@
 
 export const siteConfig = {
   name: "Authentic Perspective",
-  domain: "https://authenticperspectivestudios.com",
+  /** Primary public host — must match the live redirect target (www). */
+  domain: "https://www.authenticperspectivestudios.com",
+  /** Extra names people (and Google) search for. */
+  alternateNames: [
+    "Authentic Perspective Studios",
+    "Authentic Perspective Studio",
+    "AP Studios",
+  ] as const,
   tagline: "Defining moments. Crafted with intention.",
   description:
-    "Authentic Perspective is an Eindhoven-based creative studio producing cinematic films, photography, AI-assisted concepts, and interactive digital experiences.",
+    "Authentic Perspective Studios is an Eindhoven-based creative production studio making cinematic films, photography, AI-assisted concepts, and interactive digital experiences.",
   location: {
     city: "Eindhoven",
     country: "Netherlands",

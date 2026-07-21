@@ -12,7 +12,7 @@ import { FinalCta } from "@/sections/FinalCta";
 export const metadata: Metadata = {
   title: {
     absolute:
-      "Authentic Perspective — Film, Photography, AI & UX Studio Eindhoven",
+      "Authentic Perspective Studios — Film, Photography, AI & UX | Eindhoven",
   },
   description: siteConfig.description,
   alternates: { canonical: "/" },

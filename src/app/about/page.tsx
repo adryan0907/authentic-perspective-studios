@@ -8,7 +8,7 @@ import { siteConfig } from "@/data/site";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Authentic Perspective works at the intersection of storytelling, visual production, design, and technology — a creative production studio based in Eindhoven.",
+    "About Authentic Perspective Studios — an Eindhoven creative production studio at the intersection of storytelling, visual production, design, and technology.",
   alternates: { canonical: "/about" },
 };
 

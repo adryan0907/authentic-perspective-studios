@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 import { siteConfig } from "@/data/site";
 
 export const alt =
-  "Authentic Perspective — creative production studio, Eindhoven";
+  "Authentic Perspective Studios — creative production studio, Eindhoven";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -39,7 +39,7 @@ export default function OpenGraphImage() {
             textTransform: "uppercase",
           }}
         >
-          Authentic Perspective
+          Authentic Perspective Studios
         </div>
         <div
           style={{

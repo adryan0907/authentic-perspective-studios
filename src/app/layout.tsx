@@ -29,22 +29,51 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.domain),
   title: {
-    default: "Authentic Perspective — Film, Photography, AI & UX Studio Eindhoven",
-    template: "%s — Authentic Perspective",
+    default:
+      "Authentic Perspective Studios — Film, Photography, AI & UX | Eindhoven",
+    template: "%s — Authentic Perspective Studios",
   },
   description: siteConfig.description,
+  applicationName: "Authentic Perspective Studios",
+  keywords: [
+    "Authentic Perspective",
+    "Authentic Perspective Studios",
+    "AP Studios",
+    "filmmaker Eindhoven",
+    "videography Eindhoven",
+    "photography Eindhoven",
+    "creative studio Netherlands",
+    "brand films",
+    "aftermovies",
+  ],
   openGraph: {
     type: "website",
-    siteName: siteConfig.name,
-    locale: "en_US",
+    siteName: "Authentic Perspective Studios",
+    locale: "en_NL",
     url: siteConfig.domain,
+    title:
+      "Authentic Perspective Studios — Film, Photography, AI & UX | Eindhoven",
+    description: siteConfig.description,
   },
   twitter: {
     card: "summary_large_image",
+    title:
+      "Authentic Perspective Studios — Film, Photography, AI & UX | Eindhoven",
+    description: siteConfig.description,
   },
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+  alternates: {
+    canonical: "/",
   },
 };
 
@@ -54,32 +83,73 @@ export const viewport: Viewport = {
 
 /**
  * Structured data for the studio. Only facts provided by the studio are
- * included — no invented addresses, phone numbers or reviews.
+ * included — no invented street addresses, ratings or reviews.
  */
-const organizationJsonLd = {
+const siteJsonLd = {
   "@context": "https://schema.org",
-  "@type": "ProfessionalService",
-  name: siteConfig.name,
-  description: siteConfig.description,
-  url: siteConfig.domain,
-  email: siteConfig.email,
-  telephone: siteConfig.whatsapp.display,
-  slogan: siteConfig.tagline,
-  areaServed: "Netherlands",
-  address: {
-    "@type": "PostalAddress",
-    addressLocality: siteConfig.location.city,
-    addressCountry: siteConfig.location.countryCode,
-  },
-  knowsAbout: [
-    "Film production",
-    "Videography",
-    "Photography",
-    "AI-assisted creative production",
-    "UX design",
-    "Interactive design",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": `${siteConfig.domain}/#organization`,
+      name: siteConfig.name,
+      legalName: "Authentic Perspective",
+      alternateName: [...siteConfig.alternateNames],
+      description: siteConfig.description,
+      url: siteConfig.domain,
+      email: siteConfig.email,
+      telephone: siteConfig.whatsapp.display,
+      slogan: siteConfig.tagline,
+      logo: `${siteConfig.domain}/media/brand/logo.png`,
+      image: `${siteConfig.domain}/media/brand/bts-tracking-shot.webp`,
+      areaServed: {
+        "@type": "Country",
+        name: siteConfig.location.country,
+      },
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: siteConfig.location.city,
+        addressCountry: siteConfig.location.countryCode,
+      },
+      knowsAbout: [
+        "Film production",
+        "Videography",
+        "Photography",
+        "AI-assisted creative production",
+        "UX design",
+        "Interactive design",
+      ],
+      sameAs: Object.values(siteConfig.socials).filter(Boolean),
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${siteConfig.domain}/#website`,
+      name: "Authentic Perspective Studios",
+      alternateName: [...siteConfig.alternateNames, siteConfig.name],
+      url: siteConfig.domain,
+      description: siteConfig.description,
+      publisher: { "@id": `${siteConfig.domain}/#organization` },
+      inLanguage: "en",
+    },
+    {
+      "@type": "ProfessionalService",
+      "@id": `${siteConfig.domain}/#studio`,
+      name: "Authentic Perspective Studios",
+      alternateName: [...siteConfig.alternateNames, siteConfig.name],
+      url: siteConfig.domain,
+      image: `${siteConfig.domain}/media/brand/bts-tracking-shot.webp`,
+      description: siteConfig.description,
+      email: siteConfig.email,
+      telephone: siteConfig.whatsapp.display,
+      priceRange: "$$",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: siteConfig.location.city,
+        addressCountry: siteConfig.location.countryCode,
+      },
+      areaServed: siteConfig.location.country,
+      parentOrganization: { "@id": `${siteConfig.domain}/#organization` },
+    },
   ],
-  sameAs: Object.values(siteConfig.socials).filter(Boolean),
 };
 
 export default function RootLayout({
@@ -95,7 +165,7 @@ export default function RootLayout({
       <body className="grain flex min-h-full flex-col">
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(siteJsonLd) }}
         />
         <SkipLink />
         <Header />
