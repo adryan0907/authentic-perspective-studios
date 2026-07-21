@@ -67,23 +67,65 @@ function AiGenerationSlider() {
   );
 }
 
+const filmFrames = [
+  {
+    src: "/media/projects/roxmeister/frame-01.webp",
+    alt: "ROXMEISTER supermoto frame",
+    label: "ROXMEISTER",
+  },
+  {
+    src: "/media/projects/woonboerderij/frame-01.webp",
+    alt: "Woonboerderij Schijndel frame",
+    label: "Woonboerderij",
+  },
+  {
+    src: "/media/projects/boost-innovation-grant/frame-01.webp",
+    alt: "Boost Innovation Grant frame",
+    label: "Boost Grant",
+  },
+  {
+    src: "/media/projects/djaygear/frame-01.webp",
+    alt: "DjayGear frame",
+    label: "DjayGear",
+  },
+  {
+    src: "/media/projects/losjes-encore/frame-01.webp",
+    alt: "Losjes Encore frame",
+    label: "Losjes Encore",
+  },
+  {
+    src: "/media/projects/roxmeister/frame-02.webp",
+    alt: "ROXMEISTER chase frame",
+    label: "Supermoto",
+  },
+  {
+    src: "/media/projects/woonboerderij/frame-02.webp",
+    alt: "Woonboerderij detail frame",
+    label: "Documentary",
+  },
+  {
+    src: "/media/projects/boost-innovation-grant/frame-02.webp",
+    alt: "Boost Innovation Grant frame",
+    label: "Multicamera",
+  },
+  {
+    src: "/media/projects/djaygear/frame-02.webp",
+    alt: "DjayGear product frame",
+    label: "Product film",
+  },
+  {
+    src: "/media/projects/losjes-encore/frame-02.webp",
+    alt: "Losjes Encore event frame",
+    label: "Aftermovie",
+  },
+];
+
 const disciplines = [
   {
     id: "film",
     title: "Film",
     copy: "Brand films, documentary storytelling, automotive productions, events, aftermovies, interviews, and multicamera productions.",
-    visual: (
-      <Filmstrip
-        frames={[
-          "EXT. Coastal road — dusk",
-          "INT. Farmhouse kitchen",
-          "Booth cam — drop",
-          "Chase car — rolling",
-          "Interview A-cam",
-          "Macro — jog wheel",
-        ]}
-      />
-    ),
+    visual: <Filmstrip frames={filmFrames} />,
   },
   {
     id: "photography",
