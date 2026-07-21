@@ -39,12 +39,25 @@ export default function ContactPage() {
               <h2 className="text-meta text-stone mb-3 font-mono tracking-[0.25em] uppercase">
                 Direct
               </h2>
-              <a
-                href={`mailto:${siteConfig.email}`}
-                className="text-bone hover:text-ember text-lg break-all transition-colors"
-              >
-                {siteConfig.email}
-              </a>
+              <div className="flex flex-col gap-3">
+                <a
+                  href={`mailto:${siteConfig.email}`}
+                  className="text-bone hover:text-ember text-lg break-all transition-colors"
+                >
+                  {siteConfig.email}
+                </a>
+                <a
+                  href={siteConfig.whatsapp.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="border-bone/30 text-bone hover:border-ember hover:bg-ember hover:text-ink inline-flex w-fit items-center gap-2 rounded-sm border px-4 py-2.5 text-sm font-medium transition-colors"
+                >
+                  Message on WhatsApp
+                  <span className="text-meta font-mono tracking-wider opacity-70">
+                    {siteConfig.whatsapp.display}
+                  </span>
+                </a>
+              </div>
             </div>
 
             <div>

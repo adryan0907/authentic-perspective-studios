@@ -286,12 +286,21 @@ export function ContactForm() {
           {pending ? "Sending…" : "Send inquiry"}
         </button>
         <p className="text-stone text-sm">
-          Prefer email?{" "}
+          Prefer email or WhatsApp?{" "}
           <a
             href={`mailto:${siteConfig.email}`}
             className="text-ember hover:text-bone underline underline-offset-4"
           >
             {siteConfig.email}
+          </a>
+          {" · "}
+          <a
+            href={siteConfig.whatsapp.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-ember hover:text-bone underline underline-offset-4"
+          >
+            WhatsApp
           </a>
         </p>
       </div>

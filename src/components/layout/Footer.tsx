@@ -71,6 +71,14 @@ export function Footer() {
               >
                 {siteConfig.email}
               </a>
+              <a
+                href={siteConfig.whatsapp.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-bone/80 hover:text-bone text-sm transition-colors"
+              >
+                WhatsApp
+              </a>
               <Link
                 href="/contact"
                 className="text-ember hover:text-bone text-sm transition-colors"

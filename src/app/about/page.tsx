@@ -209,6 +209,15 @@ export default function AboutPage() {
                 >
                   {siteConfig.email}
                 </a>
+                {" · "}
+                <a
+                  href={siteConfig.whatsapp.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-ember hover:text-bone underline underline-offset-4"
+                >
+                  WhatsApp
+                </a>
               </p>
             </FadeIn>
           </div>

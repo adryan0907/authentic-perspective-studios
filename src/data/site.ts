@@ -22,6 +22,15 @@ export const siteConfig = {
   email: "adryan@authenticperspectivestudios.com",
 
   /**
+   * WhatsApp direct message. `href` is the wa.me deep link (digits only).
+   * `display` is the human-readable number shown in the UI.
+   */
+  whatsapp: {
+    display: "+966 55 405 6802",
+    href: "https://wa.me/966554056802",
+  },
+
+  /**
    * Social profiles. Set a value to null to hide the link.
    * Replace the placeholder handles with the real profile URLs.
    */

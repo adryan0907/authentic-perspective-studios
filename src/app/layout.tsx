@@ -63,6 +63,7 @@ const organizationJsonLd = {
   description: siteConfig.description,
   url: siteConfig.domain,
   email: siteConfig.email,
+  telephone: siteConfig.whatsapp.display,
   slogan: siteConfig.tagline,
   areaServed: "Netherlands",
   address: {

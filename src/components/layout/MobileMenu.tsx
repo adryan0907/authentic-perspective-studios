@@ -137,6 +137,14 @@ export function MobileMenu({
               <a href={`mailto:${siteConfig.email}`} className="text-bone text-sm">
                 {siteConfig.email}
               </a>
+              <a
+                href={siteConfig.whatsapp.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="border-bone/30 text-bone hover:border-ember hover:bg-ember hover:text-ink inline-flex w-fit items-center rounded-sm border px-4 py-2.5 text-sm font-medium transition-colors"
+              >
+                Message on WhatsApp
+              </a>
               <span className="text-stone text-sm">
                 {siteConfig.location.city}, {siteConfig.location.country}
               </span>
