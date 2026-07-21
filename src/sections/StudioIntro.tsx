@@ -9,18 +9,18 @@ export function StudioIntro() {
       className="px-gutter py-section border-line border-t"
     >
       <div className="grid grid-cols-1 items-center gap-12 md:grid-cols-12">
-        <FadeIn className="md:col-span-4 md:col-start-1">
+        <FadeIn className="md:col-span-5 md:col-start-1">
           <EditorialImage
-            src="/media/brand/bts-production-review.webp"
-            alt="Adryan reviewing footage on a tablet while holding a professional camera during a studio production"
-            label="Production review"
-            subLabel="Checking the take · on set"
-            aspect="4/5"
-            sizes="(min-width: 768px) 33vw, 100vw"
+            src="/media/brand/bts-tracking-shot.webp"
+            alt="Adryan leaning from a moving car to film a low tracking shot with a camera gimbal"
+            label="Adryan Sedyaporna"
+            subLabel="Low tracking shot · on the move"
+            aspect="3/2"
+            sizes="(min-width: 768px) 42vw, 100vw"
           />
         </FadeIn>
 
-        <div className="md:col-span-6 md:col-start-6">
+        <div className="md:col-span-6 md:col-start-7">
           <FadeIn>
             <h2
               id="studio-heading"

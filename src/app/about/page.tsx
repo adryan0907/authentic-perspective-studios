@@ -267,6 +267,18 @@ export default function AboutPage() {
         <div className="grid grid-cols-1 gap-4 md:grid-cols-12 md:gap-5">
           <FadeIn className="md:col-span-12">
             <EditorialImage
+              src="/media/brand/bts-tracking-shot.webp"
+              alt="Adryan leaning from a moving car to film a low tracking shot with a camera gimbal"
+              label="Adryan Sedyaporna"
+              subLabel="Low tracking shot · on the move"
+              aspect="3/2"
+              sizes="100vw"
+              priority
+            />
+          </FadeIn>
+
+          <FadeIn delay={0.05} className="md:col-span-12">
+            <EditorialImage
               src="/media/brand/bts-event-floor.webp"
               alt="Camera operator reviewing settings on an arena floor during event production load-in"
               label="Event production"
