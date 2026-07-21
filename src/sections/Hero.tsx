@@ -22,6 +22,7 @@ function GradeLayer({ paused }: { paused: boolean }) {
         media={heroShowreel}
         playing={!paused}
         fill
+        priority
         className="h-full"
       />
     );
@@ -52,11 +53,17 @@ function GradeLayer({ paused }: { paused: boolean }) {
  * The alternate perspective: the same scene as flat, ungraded raw footage
  * with viewfinder markings.
  */
-function RawLayer() {
+function RawLayer({ paused, playing }: { paused: boolean; playing: boolean }) {
   if (!heroShowreelRaw.placeholder) {
     return (
       <div className="h-full grayscale contrast-[1.05] brightness-[0.95]">
-        <ResponsiveVideo media={heroShowreelRaw} fill className="h-full" />
+        <ResponsiveVideo
+          media={heroShowreelRaw}
+          playing={playing && !paused}
+          fill
+          priority={playing}
+          className="h-full"
+        />
       </div>
     );
   }
@@ -96,6 +103,7 @@ function RawLayer() {
 export function Hero() {
   const reducedMotion = usePrefersReducedMotion();
   const [paused, setPaused] = useState(false);
+  const [revealPlaying, setRevealPlaying] = useState(false);
 
   const enter = (delay: number) => ({
     initial: { opacity: 0, y: reducedMotion ? 0 : 28 },
@@ -110,9 +118,10 @@ export function Hero() {
     >
       <PerspectiveLens
         base={<GradeLayer paused={paused} />}
-        reveal={<RawLayer />}
+        reveal={<RawLayer paused={paused} playing={revealPlaying} />}
         baseLabel="Final grade"
         revealLabel="Raw footage"
+        onRevealEngage={() => setRevealPlaying(true)}
       />
 
       {/* Legibility scrim — never blocks the lens */}
@@ -205,7 +214,7 @@ export function Hero() {
         aria-hidden
         className="text-bone/50 absolute top-20 left-1/2 z-20 -translate-x-1/2 font-mono text-[0.6rem] tracking-[0.3em] uppercase lg:hidden"
       >
-        Drag below to change perspective
+        Swipe to change perspective
       </motion.p>
     </section>
   );

@@ -8,14 +8,15 @@ import { cx } from "@/lib/utils";
 
 /**
  * Muted, looping ambient video. The file only loads once the element is near
- * the viewport, playback pauses off-screen, and the poster is shown instead
- * when the visitor prefers reduced motion or reduced data.
+ * the viewport (unless `priority`), playback pauses off-screen, and the poster
+ * is shown instead when the visitor prefers reduced motion or reduced data.
  */
 export function ResponsiveVideo({
   media,
   className,
   playing = true,
   fill = false,
+  priority = false,
 }: {
   media: VideoMedia;
   className?: string;
@@ -23,16 +24,23 @@ export function ResponsiveVideo({
   playing?: boolean;
   /** Fill the parent instead of enforcing the media's aspect ratio. */
   fill?: boolean;
+  /** Load and attempt playback immediately (hero backgrounds). */
+  priority?: boolean;
 }) {
   const reducedMotion = usePrefersReducedMotion();
   const staticOnly = useSaveData();
   const isMobile = useMediaQuery("(max-width: 767px)");
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [shouldLoad, setShouldLoad] = useState(false);
-  const [inView, setInView] = useState(false);
+  const [shouldLoad, setShouldLoad] = useState(priority);
+  const [inView, setInView] = useState(priority);
 
   useEffect(() => {
+    if (priority) {
+      setShouldLoad(true);
+      setInView(true);
+      return;
+    }
     const node = containerRef.current;
     if (!node) return;
     const observer = new IntersectionObserver(
@@ -44,23 +52,41 @@ export function ResponsiveVideo({
     );
     observer.observe(node);
     return () => observer.disconnect();
-  }, []);
+  }, [priority]);
 
   const active = !reducedMotion && !staticOnly && shouldLoad;
+  const src = isMobile && media.mobileSrc ? media.mobileSrc : media.src;
 
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
-    if (active && inView && playing) {
-      video.play().catch(() => {
-        /* Autoplay can be blocked; the poster remains visible. */
-      });
-    } else {
-      video.pause();
-    }
-  }, [active, inView, playing]);
 
-  const src = isMobile && media.mobileSrc ? media.mobileSrc : media.src;
+    // iOS Safari requires the muted flag to be set as a property before play().
+    video.defaultMuted = true;
+    video.muted = true;
+    video.playsInline = true;
+
+    const tryPlay = () => {
+      if (active && inView && playing) {
+        const playAttempt = video.play();
+        if (playAttempt) {
+          playAttempt.catch(() => {
+            /* Autoplay can still be blocked; poster remains visible. */
+          });
+        }
+      } else {
+        video.pause();
+      }
+    };
+
+    tryPlay();
+    video.addEventListener("loadeddata", tryPlay);
+    video.addEventListener("canplay", tryPlay);
+    return () => {
+      video.removeEventListener("loadeddata", tryPlay);
+      video.removeEventListener("canplay", tryPlay);
+    };
+  }, [active, inView, playing, src]);
 
   return (
     <div
@@ -75,15 +101,17 @@ export function ResponsiveVideo({
       {active ? (
         <video
           ref={videoRef}
+          key={src}
           muted
+          autoPlay={playing}
           loop
           playsInline
-          preload="metadata"
+          preload={priority ? "auto" : "metadata"}
           poster={media.poster}
           aria-label={media.alt}
           className="absolute inset-0 h-full w-full object-cover"
         >
-          <source src={src} />
+          <source src={src} type="video/mp4" />
         </video>
       ) : (
         media.poster && (

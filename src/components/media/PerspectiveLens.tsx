@@ -11,14 +11,12 @@ type Mode = "lens" | "drag" | "static";
 /**
  * The signature "Change Your Perspective" interaction.
  *
- * - Fine pointers: the cursor becomes a circular lens that reveals the
- *   alternate layer beneath the base layer.
- * - Touch: a draggable divider compares the two layers.
- * - Reduced motion (or no JS): the base layer is shown, with a simple
- *   button that swaps layers instantly.
+ * - Desktop (fine pointer, wider viewports): circular lens reveal
+ * - Mobile viewports: horizontal swipe / drag comparison
+ * - Reduced motion: instant swap button
  *
- * Both layers are plain ReactNodes so real footage can replace the
- * placeholder compositions without touching this component.
+ * On mobile, the alternate layer mounts only after the first swipe so a
+ * single muted video can autoplay reliably (iOS often blocks dual autoplay).
  */
 export function PerspectiveLens({
   base,
@@ -26,20 +24,34 @@ export function PerspectiveLens({
   baseLabel = "Final grade",
   revealLabel = "Raw footage",
   className,
+  onRevealEngage,
 }: {
   base: ReactNode;
   reveal: ReactNode;
   baseLabel?: string;
   revealLabel?: string;
   className?: string;
+  /** Fires once the visitor first engages the reveal layer (mobile swipe / desktop lens). */
+  onRevealEngage?: () => void;
 }) {
   const reducedMotion = usePrefersReducedMotion();
   const finePointer = useMediaQuery("(pointer: fine)");
+  const isMobileViewport = useMediaQuery("(max-width: 767px)");
   const containerRef = useRef<HTMLDivElement>(null);
-  const mode: Mode = reducedMotion ? "static" : finePointer ? "lens" : "drag";
+
+  // Swipe comparison is reserved for mobile viewports. Desktop keeps the lens.
+  const mode: Mode = reducedMotion
+    ? "static"
+    : isMobileViewport
+      ? "drag"
+      : finePointer
+        ? "lens"
+        : "static";
+
   const [lensActive, setLensActive] = useState(false);
   const [swapped, setSwapped] = useState(false);
   const [dragPosition, setDragPosition] = useState(50);
+  const [revealReady, setRevealReady] = useState(false);
 
   const x = useMotionValue(-9999);
   const y = useMotionValue(-9999);
@@ -49,8 +61,16 @@ export function PerspectiveLens({
   const sradius = useSpring(radius, spring.soft);
   const clipPath = useMotionTemplate`circle(${sradius}px at ${sx}px ${sy}px)`;
 
+  const engageReveal = () => {
+    if (!revealReady) {
+      setRevealReady(true);
+      onRevealEngage?.();
+    }
+  };
+
   const onPointerMove = (event: React.PointerEvent) => {
     if (mode !== "lens" || !containerRef.current) return;
+    engageReveal();
     const rect = containerRef.current.getBoundingClientRect();
     x.set(event.clientX - rect.left);
     y.set(event.clientY - rect.top);
@@ -76,8 +96,8 @@ export function PerspectiveLens({
       {/* Base layer */}
       <div className="absolute inset-0">{swapped ? reveal : base}</div>
 
-      {/* Lens reveal — fine pointers only */}
-      {mode === "lens" && (
+      {/* Lens reveal — desktop fine pointers only */}
+      {mode === "lens" && revealReady && (
         <motion.div
           aria-hidden
           className="absolute inset-0 will-change-[clip-path]"
@@ -90,45 +110,53 @@ export function PerspectiveLens({
         </motion.div>
       )}
 
-      {/* Draggable comparison — touch devices */}
+      {/* Draggable comparison — mobile viewports only */}
       {mode === "drag" && (
         <>
+          {revealReady && (
+            <div
+              aria-hidden
+              className="absolute inset-0"
+              style={{ clipPath: `inset(0 ${100 - dragPosition}% 0 0)` }}
+            >
+              {swapped ? base : reveal}
+            </div>
+          )}
           <div
             aria-hidden
-            className="absolute inset-0"
-            style={{ clipPath: `inset(0 ${100 - dragPosition}% 0 0)` }}
-          >
-            {swapped ? base : reveal}
-          </div>
-          <div
-            aria-hidden
-            className="bg-bone/70 absolute top-0 bottom-0 w-px"
+            className="bg-bone/70 absolute top-0 bottom-0 z-5 w-px"
             style={{ left: `${dragPosition}%` }}
           >
-            <span className="bg-bone text-ink absolute bottom-24 left-1/2 flex h-10 w-10 -translate-x-1/2 items-center justify-center rounded-full text-sm font-bold">
+            <span className="bg-bone text-ink absolute bottom-28 left-1/2 flex h-11 w-11 -translate-x-1/2 items-center justify-center rounded-full text-sm font-bold shadow-md">
               ⇄
             </span>
           </div>
-          {/* The drag control lives in a bottom band so vertical page
-              scrolling over the hero is never hijacked on touch. */}
+          {/* Horizontal drag only — vertical page scroll stays free outside this band. */}
           <input
             type="range"
             min={0}
             max={100}
             value={dragPosition}
-            onChange={(e) => setDragPosition(Number(e.target.value))}
+            onChange={(e) => {
+              engageReveal();
+              setDragPosition(Number(e.target.value));
+            }}
+            onPointerDown={engageReveal}
             aria-label={`Compare ${baseLabel.toLowerCase()} with ${revealLabel.toLowerCase()}`}
-            className="absolute inset-x-0 bottom-16 z-10 h-24 w-full cursor-ew-resize opacity-0"
-            style={{ touchAction: "pan-y" }}
+            className="absolute inset-x-0 bottom-20 z-10 h-28 w-full cursor-ew-resize opacity-0"
+            style={{ touchAction: "none" }}
           />
         </>
       )}
 
-      {/* Reduced-motion fallback: instant swap button */}
+      {/* Reduced-motion / non-mobile coarse pointer fallback */}
       {mode === "static" && (
         <button
           type="button"
-          onClick={() => setSwapped((s) => !s)}
+          onClick={() => {
+            engageReveal();
+            setSwapped((s) => !s);
+          }}
           className="text-bone/80 border-bone/30 bg-ink/60 hover:border-ember absolute bottom-6 left-1/2 z-10 -translate-x-1/2 rounded-sm border px-4 py-2 font-mono text-xs tracking-widest uppercase"
         >
           View {swapped ? baseLabel.toLowerCase() : revealLabel.toLowerCase()}
