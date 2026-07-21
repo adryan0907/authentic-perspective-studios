@@ -65,78 +65,37 @@ function AiGenerationSlider() {
   );
 }
 
-/** Toggle between a wireframe and the Digital Screen PWMI interface. */
-function PwmiUxReveal() {
-  const [polished, setPolished] = useState(false);
-
+/** Digital Screen PWMI featured as the UX discipline visual. */
+function PwmiUxFeature() {
   return (
-    <div>
+    <Link
+      href="/work/digital-screen-pwmi"
+      data-cursor="View project"
+      className="group block"
+    >
       <div className="relative aspect-video w-full overflow-hidden">
-        {/* Wireframe */}
+        <Image
+          src="/media/projects/digital-screen-pwmi/cover.webp"
+          alt="Digital Screen PWMI — mother and child facing an interactive neighbourhood screen"
+          fill
+          sizes="(min-width: 768px) 50vw, 100vw"
+          className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+        />
         <div
           aria-hidden
-          className={cx(
-            "bg-ink-2 absolute inset-0 p-4 transition-opacity duration-500 md:p-6",
-            polished ? "opacity-0" : "opacity-100",
-          )}
-        >
-          <div className="border-bone/25 flex h-full flex-col gap-3 border border-dashed p-3">
-            <div className="border-bone/25 h-8 w-2/5 border border-dashed" />
-            <div className="border-bone/25 mx-auto mt-2 aspect-square w-1/3 rounded-full border border-dashed" />
-            <div className="border-bone/25 mx-auto h-3 w-2/5 border border-dashed" />
-            <div className="mt-auto grid grid-cols-3 gap-2">
-              <div className="border-bone/25 aspect-4/5 border border-dashed" />
-              <div className="border-bone/25 aspect-4/5 border border-dashed" />
-              <div className="border-bone/25 aspect-4/5 border border-dashed" />
-            </div>
-          </div>
-          <span className="text-bone/45 absolute right-4 bottom-4 font-mono text-[0.55rem] tracking-widest uppercase">
-            Wireframe · attract loop
-          </span>
-        </div>
-
-        {/* Polished PWMI interface */}
-        <div
-          className={cx(
-            "absolute inset-0 transition-opacity duration-500",
-            polished ? "opacity-100" : "opacity-0",
-          )}
-        >
-          <Image
-            src="/media/projects/digital-screen-pwmi/frame-03.webp"
-            alt="Digital Screen PWMI — interactive neighbourhood screen in a public station setting"
-            fill
-            sizes="(min-width: 768px) 50vw, 100vw"
-            className="object-cover"
-          />
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent"
-          />
-          <span className="text-bone/80 absolute bottom-4 left-4 font-mono text-[0.55rem] tracking-widest uppercase">
+          className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-black/15 to-transparent"
+        />
+        <div className="absolute inset-x-0 bottom-0 flex flex-col gap-1 p-5 md:p-6">
+          <span className="text-bone/85 font-mono text-[0.6rem] tracking-[0.2em] uppercase">
             <span className="text-ember mr-2">●</span>
             Digital Screen PWMI
           </span>
+          <span className="text-bone/55 font-mono text-[0.55rem] tracking-[0.15em] uppercase">
+            UX · Immersive public media
+          </span>
         </div>
       </div>
-
-      <div className="mt-3 flex flex-wrap items-center gap-3">
-        <button
-          type="button"
-          onClick={() => setPolished((p) => !p)}
-          aria-pressed={polished}
-          className="border-line text-bone/80 hover:border-ember min-h-11 rounded-sm border px-4 font-mono text-[0.6rem] tracking-widest uppercase"
-        >
-          {polished ? "View wireframe" : "View final interface"}
-        </button>
-        <Link
-          href="/work/digital-screen-pwmi"
-          className="text-bone/70 hover:text-ember border-line hover:border-ember min-h-11 border-b pb-1 font-mono text-[0.6rem] tracking-widest uppercase"
-        >
-          View project →
-        </Link>
-      </div>
-    </div>
+    </Link>
   );
 }
 
@@ -187,7 +146,7 @@ const disciplines = [
     id: "ux",
     title: "UX & Interactive",
     copy: "Digital concepts, websites, user experiences, prototypes, creative technology, and interactive storytelling — like Digital Screen PWMI for public neighbourhood media.",
-    visual: <PwmiUxReveal />,
+    visual: <PwmiUxFeature />,
   },
 ];
 
