@@ -17,7 +17,14 @@ import { usePrefersReducedMotion } from "@/lib/hooks";
  */
 function GradeLayer({ paused }: { paused: boolean }) {
   if (!heroShowreel.placeholder) {
-    return <ResponsiveVideo media={heroShowreel} playing={!paused} className="h-full" />;
+    return (
+      <ResponsiveVideo
+        media={heroShowreel}
+        playing={!paused}
+        fill
+        className="h-full"
+      />
+    );
   }
   return (
     <div aria-hidden className="absolute inset-0 overflow-hidden bg-[#120c07]">
@@ -47,7 +54,11 @@ function GradeLayer({ paused }: { paused: boolean }) {
  */
 function RawLayer() {
   if (!heroShowreelRaw.placeholder) {
-    return <ResponsiveVideo media={heroShowreelRaw} className="h-full" />;
+    return (
+      <div className="h-full grayscale contrast-[1.05] brightness-[0.95]">
+        <ResponsiveVideo media={heroShowreelRaw} fill className="h-full" />
+      </div>
+    );
   }
   return (
     <div aria-hidden className="absolute inset-0 overflow-hidden bg-[#1c1b19]">
