@@ -1,6 +1,6 @@
+import { EditorialImage } from "@/components/media/EditorialImage";
 import { FadeIn } from "@/components/ui/FadeIn";
 import { MagneticButton } from "@/components/ui/MagneticButton";
-import { MediaPlaceholder } from "@/components/media/MediaPlaceholder";
 
 export function StudioIntro() {
   return (
@@ -10,13 +10,13 @@ export function StudioIntro() {
     >
       <div className="grid grid-cols-1 items-center gap-12 md:grid-cols-12">
         <FadeIn className="md:col-span-4 md:col-start-1">
-          {/* Replace with a real founder/studio portrait:
-              /public/media/brand/studio-portrait.webp */}
-          <MediaPlaceholder
-            label="Studio portrait — Adryan at work"
-            path="/media/brand/studio-portrait.webp"
+          <EditorialImage
+            src="/media/brand/bts-production-review.webp"
+            alt="Adryan reviewing footage on a tablet while holding a professional camera during a studio production"
+            label="Production review"
+            subLabel="Checking the take · on set"
             aspect="4/5"
-            palette={["#2b2013", "#0e0c08"]}
+            sizes="(min-width: 768px) 33vw, 100vw"
           />
         </FadeIn>
 

@@ -181,7 +181,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Eindhoven + BTS */}
+      {/* Eindhoven */}
       <section
         aria-labelledby="location-heading"
         className="px-gutter py-section border-line border-t"
@@ -243,6 +243,93 @@ export default function AboutPage() {
               />
             </FadeIn>
           </div>
+        </div>
+      </section>
+
+      {/* Behind the scenes gallery */}
+      <section
+        aria-labelledby="bts-heading"
+        className="px-gutter py-section border-line border-t"
+      >
+        <FadeIn className="mb-12 md:mb-16 md:max-w-xl">
+          <h2
+            id="bts-heading"
+            className="text-h2 font-serif font-light tracking-tight"
+          >
+            Behind the scenes
+          </h2>
+          <p className="text-stone mt-5 leading-relaxed">
+            The work between takes — briefings, camera checks, load-in days, and
+            the quiet moments that shape the final frame.
+          </p>
+        </FadeIn>
+
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-12 md:gap-5">
+          <FadeIn className="md:col-span-12">
+            <EditorialImage
+              src="/media/brand/bts-event-floor.webp"
+              alt="Camera operator reviewing settings on an arena floor during event production load-in"
+              label="Event production"
+              subLabel="Arena floor · load-in day"
+              aspect="3/2"
+              sizes="100vw"
+            />
+          </FadeIn>
+
+          <FadeIn delay={0.05} className="md:col-span-4">
+            <EditorialImage
+              src="/media/brand/bts-trade-show.webp"
+              alt="First-person view of a camera rig filming a busy trade show hall"
+              label="On location"
+              subLabel="Trade show coverage"
+              aspect="4/5"
+              sizes="(min-width: 768px) 33vw, 100vw"
+            />
+          </FadeIn>
+
+          <FadeIn delay={0.1} className="md:col-span-4 md:mt-10">
+            <EditorialImage
+              src="/media/brand/bts-studio-set.webp"
+              alt="Dual-camera studio setup filming a subject seated among vinyl records with magenta accent lighting"
+              label="Studio production"
+              subLabel="Dual camera · set build"
+              aspect="4/5"
+              sizes="(min-width: 768px) 33vw, 100vw"
+            />
+          </FadeIn>
+
+          <FadeIn delay={0.15} className="md:col-span-4">
+            <EditorialImage
+              src="/media/brand/bts-creative-brief.webp"
+              alt="Creative team gathered around a planning table with cameras and studio lights in an industrial space"
+              label="Creative briefing"
+              subLabel="Planning the next shoot"
+              aspect="4/5"
+              sizes="(min-width: 768px) 33vw, 100vw"
+            />
+          </FadeIn>
+
+          <FadeIn delay={0.08} className="md:col-span-5 md:col-start-2">
+            <EditorialImage
+              src="/media/brand/bts-production-review.webp"
+              alt="Adryan reviewing footage on a tablet while holding a professional camera during a studio production"
+              label="Production review"
+              subLabel="Checking the take · on set"
+              aspect="4/5"
+              sizes="(min-width: 768px) 40vw, 100vw"
+            />
+          </FadeIn>
+
+          <FadeIn
+            delay={0.14}
+            className="flex items-end md:col-span-5 md:col-start-8"
+          >
+            <p className="text-stone/70 font-serif max-w-sm text-lg leading-relaxed italic md:pb-8">
+              Every production leaves a trail — equipment, conversations, and
+              the perspective that only shows up when you are already in the
+              room.
+            </p>
+          </FadeIn>
         </div>
       </section>
 
