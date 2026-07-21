@@ -6,17 +6,14 @@ import { useMediaQuery, usePrefersReducedMotion } from "@/lib/hooks";
 import { spring } from "@/lib/motion";
 import { cx } from "@/lib/utils";
 
-type Mode = "lens" | "drag" | "static";
+type Mode = "lens" | "static" | "plain";
 
 /**
  * The signature "Change Your Perspective" interaction.
  *
- * - Desktop (fine pointer, wider viewports): circular lens reveal
- * - Mobile viewports: horizontal swipe / drag comparison
+ * - Desktop (fine pointer): circular lens reveal
+ * - Mobile: plain showreel only (no divider / swipe chrome)
  * - Reduced motion: instant swap button
- *
- * On mobile, the alternate layer mounts only after the first swipe so a
- * single muted video can autoplay reliably (iOS often blocks dual autoplay).
  */
 export function PerspectiveLens({
   base,
@@ -31,7 +28,7 @@ export function PerspectiveLens({
   baseLabel?: string;
   revealLabel?: string;
   className?: string;
-  /** Fires once the visitor first engages the reveal layer (mobile swipe / desktop lens). */
+  /** Fires once the visitor first engages the reveal layer (desktop lens). */
   onRevealEngage?: () => void;
 }) {
   const reducedMotion = usePrefersReducedMotion();
@@ -39,18 +36,16 @@ export function PerspectiveLens({
   const isMobileViewport = useMediaQuery("(max-width: 767px)");
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Swipe comparison is reserved for mobile viewports. Desktop keeps the lens.
   const mode: Mode = reducedMotion
     ? "static"
     : isMobileViewport
-      ? "drag"
+      ? "plain"
       : finePointer
         ? "lens"
-        : "static";
+        : "plain";
 
   const [lensActive, setLensActive] = useState(false);
   const [swapped, setSwapped] = useState(false);
-  const [dragPosition, setDragPosition] = useState(50);
   const [revealReady, setRevealReady] = useState(false);
 
   const x = useMotionValue(-9999);
@@ -93,10 +88,8 @@ export function PerspectiveLens({
       onPointerLeave={onPointerLeave}
       className={cx("absolute inset-0 overflow-hidden", className)}
     >
-      {/* Base layer */}
       <div className="absolute inset-0">{swapped ? reveal : base}</div>
 
-      {/* Lens reveal — desktop fine pointers only */}
       {mode === "lens" && revealReady && (
         <motion.div
           aria-hidden
@@ -110,46 +103,6 @@ export function PerspectiveLens({
         </motion.div>
       )}
 
-      {/* Draggable comparison — mobile viewports only */}
-      {mode === "drag" && (
-        <>
-          {revealReady && (
-            <div
-              aria-hidden
-              className="absolute inset-0"
-              style={{ clipPath: `inset(0 ${100 - dragPosition}% 0 0)` }}
-            >
-              {swapped ? base : reveal}
-            </div>
-          )}
-          <div
-            aria-hidden
-            className="bg-bone/70 absolute top-0 bottom-0 z-5 w-px"
-            style={{ left: `${dragPosition}%` }}
-          >
-            <span className="bg-bone text-ink absolute bottom-28 left-1/2 flex h-11 w-11 -translate-x-1/2 items-center justify-center rounded-full text-sm font-bold shadow-md">
-              ⇄
-            </span>
-          </div>
-          {/* Horizontal drag only — vertical page scroll stays free outside this band. */}
-          <input
-            type="range"
-            min={0}
-            max={100}
-            value={dragPosition}
-            onChange={(e) => {
-              engageReveal();
-              setDragPosition(Number(e.target.value));
-            }}
-            onPointerDown={engageReveal}
-            aria-label={`Compare ${baseLabel.toLowerCase()} with ${revealLabel.toLowerCase()}`}
-            className="absolute inset-x-0 bottom-20 z-10 h-28 w-full cursor-ew-resize opacity-0"
-            style={{ touchAction: "none" }}
-          />
-        </>
-      )}
-
-      {/* Reduced-motion / non-mobile coarse pointer fallback */}
       {mode === "static" && (
         <button
           type="button"

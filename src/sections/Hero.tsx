@@ -197,7 +197,7 @@ export function Hero() {
         </button>
       </div>
 
-      {/* Interaction cue */}
+      {/* Interaction cue — desktop only */}
       <motion.p
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -206,15 +206,6 @@ export function Hero() {
         className="text-bone/50 absolute top-1/2 right-6 z-20 hidden -translate-y-1/2 rotate-90 font-mono text-[0.6rem] tracking-[0.3em] uppercase lg:block"
       >
         Move to change perspective — scroll to explore
-      </motion.p>
-      <motion.p
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.4, duration: duration.slow }}
-        aria-hidden
-        className="text-bone/50 absolute top-20 left-1/2 z-20 -translate-x-1/2 font-mono text-[0.6rem] tracking-[0.3em] uppercase lg:hidden"
-      >
-        Swipe to change perspective
       </motion.p>
     </section>
   );
