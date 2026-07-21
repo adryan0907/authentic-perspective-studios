@@ -26,7 +26,7 @@ export const siteConfig = {
    * Replace the placeholder handles with the real profile URLs.
    */
   socials: {
-    instagram: "https://www.instagram.com/authenticperspective",
+    instagram: "https://www.instagram.com/ap.action",
     linkedin: "https://www.linkedin.com/company/authentic-perspective",
     vimeo: null as string | null,
     youtube: null as string | null,
