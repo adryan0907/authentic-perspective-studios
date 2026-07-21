@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import type { Project } from "@/types/content";
-import { cx, pad } from "@/lib/utils";
+import { cx } from "@/lib/utils";
 import { Media } from "./Media";
 import { AutoplayPreview } from "./AutoplayPreview";
 import { usePrefersReducedMotion } from "@/lib/hooks";
@@ -15,14 +15,13 @@ import { usePrefersReducedMotion } from "@/lib/hooks";
  */
 export function ProjectCard({
   project,
-  index,
   sizes = "(min-width: 768px) 50vw, 100vw",
   className,
   titleClassName,
 }: {
   project: Project;
-  /** Editorial project number shown alongside the title. */
-  index: number;
+  /** @deprecated Kept optional for call-site compatibility; no longer shown. */
+  index?: number;
   sizes?: string;
   className?: string;
   titleClassName?: string;
@@ -80,23 +79,20 @@ export function ProjectCard({
         )}
       </div>
 
-      <div className="mt-4 flex items-baseline gap-3">
-        <span className="text-stone shrink-0 font-mono text-xs">{pad(index)}</span>
-        <div>
-          <h3
-            className={cx(
-              "text-h3 font-sans font-bold tracking-tight transition-colors duration-300",
-              hovered && !reducedMotion ? "text-outline" : "text-bone",
-              titleClassName,
-            )}
-          >
-            {project.title}
-          </h3>
-          <p className="text-stone mt-1 text-sm">{project.description}</p>
-          <p className="text-meta text-stone/80 mt-2 font-mono tracking-widest uppercase">
-            {project.categoryLabel} · {project.year}
-          </p>
-        </div>
+      <div className="mt-4">
+        <h3
+          className={cx(
+            "text-h3 font-sans font-bold tracking-tight transition-colors duration-300",
+            hovered && !reducedMotion ? "text-outline" : "text-bone",
+            titleClassName,
+          )}
+        >
+          {project.title}
+        </h3>
+        <p className="text-stone mt-1 text-sm">{project.description}</p>
+        <p className="text-meta text-stone/80 mt-2 font-mono tracking-widest uppercase">
+          {project.categoryLabel} · {project.year}
+        </p>
       </div>
     </Link>
   );

@@ -22,9 +22,6 @@ export function StudioIntro() {
 
         <div className="md:col-span-6 md:col-start-6">
           <FadeIn>
-            <p className="text-meta text-stone mb-4 font-mono tracking-[0.25em] uppercase">
-              05 — The studio
-            </p>
             <h2
               id="studio-heading"
               className="text-h2 font-serif font-light tracking-tight"

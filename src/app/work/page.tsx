@@ -22,9 +22,6 @@ export default async function WorkPage({
   return (
     <div className="px-gutter pt-32 pb-24 md:pt-44">
       <header className="mb-14 md:mb-20">
-        <p className="text-meta text-stone mb-4 font-mono tracking-[0.25em] uppercase">
-          The archive
-        </p>
         <h1 className="text-h1 font-sans font-black tracking-tight uppercase">
           Work
         </h1>

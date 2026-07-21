@@ -19,9 +19,6 @@ export function SelectedWork() {
     <section aria-labelledby="work-heading" className="px-gutter py-section">
       <FadeIn className="mb-14 flex flex-wrap items-end justify-between gap-6 md:mb-20">
         <div>
-          <p className="text-meta text-stone mb-4 font-mono tracking-[0.25em] uppercase">
-            02 — Selected work
-          </p>
           <h2 id="work-heading" className="text-h1 font-sans font-black tracking-tight uppercase">
             The work
           </h2>

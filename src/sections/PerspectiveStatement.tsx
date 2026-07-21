@@ -5,11 +5,6 @@ export function PerspectiveStatement() {
   return (
     <section aria-labelledby="statement-heading" className="px-gutter py-section">
       <div className="mx-auto max-w-5xl">
-        <FadeIn>
-          <p className="text-meta text-stone mb-8 font-mono tracking-[0.25em] uppercase">
-            01 — Our perspective
-          </p>
-        </FadeIn>
         <h2 id="statement-heading" className="sr-only">
           Studio philosophy
         </h2>

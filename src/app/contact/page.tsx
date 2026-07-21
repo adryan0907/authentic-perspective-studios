@@ -15,9 +15,6 @@ export default function ContactPage() {
   return (
     <div className="px-gutter pt-32 pb-24 md:pt-44">
       <header className="mb-16 md:mb-24">
-        <p className="text-meta text-stone mb-6 font-mono tracking-[0.25em] uppercase">
-          Contact
-        </p>
         <TextReveal
           as="h1"
           lines={["Let’s create something", "worth remembering."]}

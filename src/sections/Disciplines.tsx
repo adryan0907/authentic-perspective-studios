@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Filmstrip } from "@/components/media/Filmstrip";
 import { ContactSheet } from "@/components/media/ContactSheet";
 import { FadeIn } from "@/components/ui/FadeIn";
-import { cx, pad } from "@/lib/utils";
+import { cx } from "@/lib/utils";
 
 /** Generation slider: rough AI draft on the left, refined frame on the right. */
 function AiGenerationSlider() {
@@ -184,17 +184,11 @@ export function Disciplines() {
   return (
     <section aria-labelledby="disciplines-heading" className="px-gutter py-section border-line border-t">
       <FadeIn className="mb-14 md:mb-20">
-        <p className="text-meta text-stone mb-4 font-mono tracking-[0.25em] uppercase">
-          03 — What we do
-        </p>
         <h2
           id="disciplines-heading"
           className="text-h1 font-sans font-black tracking-tight uppercase"
         >
-          Four disciplines.
-          <span className="font-serif text-stone block font-light normal-case italic">
-            One perspective.
-          </span>
+          Four disciplines
         </h2>
       </FadeIn>
 
@@ -213,10 +207,9 @@ export function Disciplines() {
                   index % 2 === 1 && "md:order-2 md:col-start-8",
                 )}
               >
-                <span className="text-stone font-mono text-xs">{pad(index + 1)}</span>
                 <h3
                   id={`discipline-${discipline.id}`}
-                  className="text-h2 mt-2 font-sans font-bold tracking-tight"
+                  className="text-h2 font-sans font-bold tracking-tight"
                 >
                   {discipline.title}
                 </h3>

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
 import type { Project } from "@/types/content";
 import { duration, easing } from "@/lib/motion";
-import { cx, pad } from "@/lib/utils";
+import { cx } from "@/lib/utils";
 import {
   matchesFilter,
   workFilters,
@@ -154,7 +154,7 @@ export function WorkArchive({
       ) : (
         <motion.ol layout={!reducedMotion} className="border-line border-t">
           <AnimatePresence mode="popLayout" initial={false}>
-            {filtered.map((project, index) => (
+            {filtered.map((project) => (
               <motion.li
                 layout={!reducedMotion}
                 key={project.slug}
@@ -165,11 +165,8 @@ export function WorkArchive({
               >
                 <Link
                   href={`/work/${project.slug}`}
-                  className="group border-line hover:bg-ink-2 grid grid-cols-[auto_1fr_auto] items-baseline gap-x-4 gap-y-1 border-b px-2 py-5 transition-colors sm:grid-cols-[3rem_1fr_auto_6rem] md:gap-x-8"
+                  className="group border-line hover:bg-ink-2 grid grid-cols-[1fr_auto] items-baseline gap-x-4 gap-y-1 border-b px-2 py-5 transition-colors sm:grid-cols-[1fr_auto_6rem] md:gap-x-8"
                 >
-                  <span className="text-stone font-mono text-xs">
-                    {pad(index + 1)}
-                  </span>
                   <span className="min-w-0">
                     <span className="text-h3 group-hover:text-ember block truncate font-sans font-bold tracking-tight transition-colors">
                       {project.title}

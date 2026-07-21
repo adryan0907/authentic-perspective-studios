@@ -4,7 +4,6 @@ import { useRef } from "react";
 import { motion, useScroll, useSpring } from "motion/react";
 import { FadeIn } from "@/components/ui/FadeIn";
 import { spring } from "@/lib/motion";
-import { pad } from "@/lib/utils";
 import { usePrefersReducedMotion } from "@/lib/hooks";
 
 /**
@@ -54,9 +53,6 @@ export function Process() {
       className="px-gutter py-section border-line border-t"
     >
       <FadeIn className="mb-14 md:mb-20">
-        <p className="text-meta text-stone mb-4 font-mono tracking-[0.25em] uppercase">
-          04 — How we work
-        </p>
         <h2
           id="process-heading"
           className="text-h1 font-sans font-black tracking-tight uppercase"
@@ -83,17 +79,14 @@ export function Process() {
         </div>
 
         <ol className="flex flex-col gap-16 md:gap-24">
-          {phases.map((phase, index) => (
+          {phases.map((phase) => (
             <li key={phase.title} className="relative pl-10 md:pl-16">
               <span
                 aria-hidden
                 className="border-ember bg-ink absolute top-2 left-0 block h-4 w-4 rounded-full border-2 md:h-5 md:w-5"
               />
               <FadeIn>
-                <span className="text-stone font-mono text-xs">
-                  Phase {pad(index + 1)}
-                </span>
-                <h3 className="text-h2 mt-1 font-sans font-bold tracking-tight">
+                <h3 className="text-h2 font-sans font-bold tracking-tight">
                   {phase.title}
                 </h3>
                 <p className="text-stone mt-3 max-w-xl text-base leading-relaxed md:text-lg">

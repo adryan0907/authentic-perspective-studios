@@ -60,12 +60,9 @@ export default function AboutPage() {
     <div className="pt-32 md:pt-44">
       {/* Philosophy */}
       <section aria-labelledby="about-heading" className="px-gutter pb-section">
-        <p className="text-meta text-stone mb-6 font-mono tracking-[0.25em] uppercase">
-          About the studio
-        </p>
         <TextReveal
           as="h1"
-          lines={["Different disciplines.", "One perspective."]}
+          lines={["Different disciplines.", "One studio."]}
           className="text-display font-sans font-black tracking-tight uppercase"
         />
         <FadeIn delay={0.3} className="mt-12 md:ml-[35%]">
