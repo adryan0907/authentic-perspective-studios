@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
 import { Filmstrip } from "@/components/media/Filmstrip";
 import { ContactSheet } from "@/components/media/ContactSheet";
 import { FadeIn } from "@/components/ui/FadeIn";
@@ -63,8 +65,8 @@ function AiGenerationSlider() {
   );
 }
 
-/** Toggle between a wireframe and the polished interface it becomes. */
-function WireframeReveal() {
+/** Toggle between a wireframe and the Digital Screen PWMI interface. */
+function PwmiUxReveal() {
   const [polished, setPolished] = useState(false);
 
   return (
@@ -80,51 +82,60 @@ function WireframeReveal() {
         >
           <div className="border-bone/25 flex h-full flex-col gap-3 border border-dashed p-3">
             <div className="border-bone/25 h-8 w-2/5 border border-dashed" />
-            <div className="border-bone/25 h-3 w-4/5 border border-dashed" />
-            <div className="border-bone/25 h-3 w-3/5 border border-dashed" />
-            <div className="mt-auto flex gap-3">
-              <div className="border-bone/25 h-9 w-28 border border-dashed" />
-              <div className="border-bone/25 h-9 w-28 border border-dashed" />
+            <div className="border-bone/25 mx-auto mt-2 aspect-square w-1/3 rounded-full border border-dashed" />
+            <div className="border-bone/25 mx-auto h-3 w-2/5 border border-dashed" />
+            <div className="mt-auto grid grid-cols-3 gap-2">
+              <div className="border-bone/25 aspect-[4/5] border border-dashed" />
+              <div className="border-bone/25 aspect-[4/5] border border-dashed" />
+              <div className="border-bone/25 aspect-[4/5] border border-dashed" />
             </div>
           </div>
+          <span className="text-bone/45 absolute right-4 bottom-4 font-mono text-[0.55rem] tracking-widest uppercase">
+            Wireframe · attract loop
+          </span>
         </div>
-        {/* Polished interface */}
+
+        {/* Polished PWMI interface */}
         <div
-          aria-hidden
           className={cx(
-            "absolute inset-0 p-4 transition-opacity duration-500 md:p-6",
+            "absolute inset-0 transition-opacity duration-500",
             polished ? "opacity-100" : "opacity-0",
           )}
-          style={{
-            background:
-              "radial-gradient(80% 70% at 80% 20%, #e7752f22 0%, transparent 55%), linear-gradient(150deg, #1c130b 0%, #0e0b08 75%)",
-          }}
         >
-          <div className="flex h-full flex-col gap-3 p-3">
-            <div className="text-bone font-sans text-xl font-black tracking-tight md:text-2xl">
-              Generations United
-            </div>
-            <div className="bg-bone/25 h-2 w-4/5 rounded-full" />
-            <div className="bg-bone/15 h-2 w-3/5 rounded-full" />
-            <div className="mt-auto flex gap-3">
-              <div className="bg-ember text-ink flex h-9 w-28 items-center justify-center rounded-sm text-[0.65rem] font-bold tracking-wide uppercase">
-                Explore
-              </div>
-              <div className="border-bone/40 text-bone flex h-9 w-28 items-center justify-center rounded-sm border text-[0.65rem] tracking-wide uppercase">
-                Stories
-              </div>
-            </div>
-          </div>
+          <Image
+            src="/media/projects/digital-screen-pwmi/frame-03.webp"
+            alt="Digital Screen PWMI — interactive neighbourhood screen in a public station setting"
+            fill
+            sizes="(min-width: 768px) 50vw, 100vw"
+            className="object-cover"
+          />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent"
+          />
+          <span className="text-bone/80 absolute bottom-4 left-4 font-mono text-[0.55rem] tracking-widest uppercase">
+            <span className="text-ember mr-2">●</span>
+            Digital Screen PWMI
+          </span>
         </div>
       </div>
-      <button
-        type="button"
-        onClick={() => setPolished((p) => !p)}
-        aria-pressed={polished}
-        className="border-line text-bone/80 hover:border-ember mt-3 min-h-11 rounded-sm border px-4 font-mono text-[0.6rem] tracking-widest uppercase"
-      >
-        {polished ? "View wireframe" : "View final interface"}
-      </button>
+
+      <div className="mt-3 flex flex-wrap items-center gap-3">
+        <button
+          type="button"
+          onClick={() => setPolished((p) => !p)}
+          aria-pressed={polished}
+          className="border-line text-bone/80 hover:border-ember min-h-11 rounded-sm border px-4 font-mono text-[0.6rem] tracking-widest uppercase"
+        >
+          {polished ? "View wireframe" : "View final interface"}
+        </button>
+        <Link
+          href="/work/digital-screen-pwmi"
+          className="text-bone/70 hover:text-ember border-line hover:border-ember min-h-11 border-b pb-1 font-mono text-[0.6rem] tracking-widest uppercase"
+        >
+          View project →
+        </Link>
+      </div>
     </div>
   );
 }
@@ -175,8 +186,8 @@ const disciplines = [
   {
     id: "ux",
     title: "UX & Interactive",
-    copy: "Digital concepts, websites, user experiences, prototypes, creative technology, and interactive storytelling.",
-    visual: <WireframeReveal />,
+    copy: "Digital concepts, websites, user experiences, prototypes, creative technology, and interactive storytelling — like Digital Screen PWMI for public neighbourhood media.",
+    visual: <PwmiUxReveal />,
   },
 ];
 
