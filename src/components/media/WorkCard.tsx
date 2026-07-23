@@ -8,12 +8,22 @@ import {
   useSpring,
   useTransform,
 } from "motion/react";
-import type { Project } from "@/types/content";
+import type { Project, VideoMedia } from "@/types/content";
 import { duration, easing, spring } from "@/lib/motion";
 import { cx } from "@/lib/utils";
-import { useMediaQuery, usePrefersReducedMotion } from "@/lib/hooks";
+import { usePrefersReducedMotion } from "@/lib/hooks";
 import { Media } from "./Media";
 import { AutoplayPreview } from "./AutoplayPreview";
+
+function ambientVideoFor(project: Project): VideoMedia | undefined {
+  if (project.previewVideo && !project.previewVideo.placeholder) {
+    return project.previewVideo;
+  }
+  return project.gallery.find(
+    (item): item is VideoMedia =>
+      item.type === "video" && !item.placeholder,
+  );
+}
 
 /**
  * Cinematic featured-work card. Motion is scroll- and viewport-driven so it
@@ -35,10 +45,10 @@ export function WorkCard({
   direction?: "up" | "left" | "right";
 }) {
   const reducedMotion = usePrefersReducedMotion();
-  const isTouch = useMediaQuery("(hover: none)");
   const cardRef = useRef<HTMLAnchorElement>(null);
   const [inView, setInView] = useState(false);
   const [hovered, setHovered] = useState(false);
+  const ambient = ambientVideoFor(project);
 
   const { scrollYProgress } = useScroll({
     target: cardRef,
@@ -51,10 +61,8 @@ export function WorkCard({
   );
   const y = useSpring(rawY, spring.soft);
 
-  const showPreview =
-    !reducedMotion &&
-    !!project.previewVideo &&
-    (hovered || (isTouch && inView));
+  // Play as soon as the card is on screen — no hover required.
+  const showPreview = !reducedMotion && !!ambient && inView;
 
   const enterX =
     direction === "left" ? -40 : direction === "right" ? 40 : 0;
@@ -133,7 +141,7 @@ export function WorkCard({
             </div>
           </motion.div>
 
-          {project.previewVideo && (
+          {ambient && (
             <div
               className={cx(
                 "absolute inset-0 transition-opacity duration-500",
@@ -141,10 +149,10 @@ export function WorkCard({
               )}
             >
               <AutoplayPreview
-                media={project.previewVideo}
+                media={ambient}
                 label={project.title}
                 palette={project.placeholderPalette}
-                active={!!showPreview}
+                active={showPreview}
                 className="h-full"
               />
             </div>

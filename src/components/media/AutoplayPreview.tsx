@@ -5,9 +5,8 @@ import { MediaPlaceholder } from "./MediaPlaceholder";
 import { ResponsiveVideo } from "./ResponsiveVideo";
 
 /**
- * Short muted preview clip used on project cards. On fine-pointer devices it
- * plays while hovered; on touch it plays while in view (ResponsiveVideo
- * already gates loading and pausing via IntersectionObserver).
+ * Short muted ambient clip for project cards. Plays whenever `active` is true
+ * (typically as soon as the card enters the viewport).
  */
 export function AutoplayPreview({
   media,
@@ -19,7 +18,7 @@ export function AutoplayPreview({
   media: VideoMedia;
   label: string;
   palette?: readonly [string, string];
-  /** Whether the preview should currently play (e.g. card hovered). */
+  /** Whether the preview should currently play. */
   active: boolean;
   className?: string;
 }) {
@@ -36,5 +35,12 @@ export function AutoplayPreview({
     );
   }
 
-  return <ResponsiveVideo media={media} playing={active} className={className} />;
+  return (
+    <ResponsiveVideo
+      media={media}
+      playing={active}
+      fill
+      className={className}
+    />
+  );
 }

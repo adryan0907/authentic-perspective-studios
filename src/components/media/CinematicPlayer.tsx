@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import type { VideoMedia } from "@/types/content";
 import { aspectToCss } from "@/lib/media";
 import { cx, pad } from "@/lib/utils";
+import { usePrefersReducedMotion } from "@/lib/hooks";
 import { MediaPlaceholder } from "./MediaPlaceholder";
 
 function formatTime(seconds: number): string {
@@ -14,9 +15,8 @@ function formatTime(seconds: number): string {
 }
 
 /**
- * Custom cinematic video player for hero films: play/pause, mute/unmute,
- * seekable progress, fullscreen and captions support. Audio never autoplays —
- * playback starts from an explicit user action.
+ * Cinematic case-study player. Starts muted autoplay as soon as it enters
+ * view so the page feels alive; sound stays opt-in via Unmute.
  */
 export function CinematicPlayer({
   media,
@@ -29,23 +29,51 @@ export function CinematicPlayer({
   palette?: readonly [string, string];
   className?: string;
 }) {
+  const reducedMotion = usePrefersReducedMotion();
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = useState(false);
-  const [muted, setMuted] = useState(false);
+  const [muted, setMuted] = useState(true);
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
   const [started, setStarted] = useState(false);
+  const [inView, setInView] = useState(false);
+
+  const tryPlay = useCallback(() => {
+    const video = videoRef.current;
+    if (!video || reducedMotion) return;
+    video.defaultMuted = true;
+    video.muted = muted;
+    video.playsInline = true;
+    const attempt = video.play();
+    if (attempt) {
+      attempt
+        .then(() => setStarted(true))
+        .catch(() => {
+          /* Autoplay may still be blocked until a gesture. */
+        });
+    }
+  }, [muted, reducedMotion]);
 
   const togglePlay = useCallback(() => {
     const video = videoRef.current;
     if (!video) return;
     if (video.paused) {
-      video.play().catch(() => undefined);
-      setStarted(true);
+      tryPlay();
     } else {
       video.pause();
     }
+  }, [tryPlay]);
+
+  useEffect(() => {
+    const node = containerRef.current;
+    if (!node) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      { rootMargin: "120px", threshold: 0.2 },
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
@@ -53,19 +81,35 @@ export function CinematicPlayer({
     if (!video) return;
     const onTime = () => setProgress(video.currentTime);
     const onMeta = () => setDuration(video.duration);
-    const onPlay = () => setPlaying(true);
+    const onPlay = () => {
+      setPlaying(true);
+      setStarted(true);
+    };
     const onPause = () => setPlaying(false);
     video.addEventListener("timeupdate", onTime);
     video.addEventListener("loadedmetadata", onMeta);
+    video.addEventListener("canplay", tryPlay);
     video.addEventListener("play", onPlay);
     video.addEventListener("pause", onPause);
     return () => {
       video.removeEventListener("timeupdate", onTime);
       video.removeEventListener("loadedmetadata", onMeta);
+      video.removeEventListener("canplay", tryPlay);
       video.removeEventListener("play", onPlay);
       video.removeEventListener("pause", onPause);
     };
-  }, []);
+  }, [tryPlay]);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    video.muted = muted;
+    if (inView && !reducedMotion) {
+      tryPlay();
+    } else if (!inView) {
+      video.pause();
+    }
+  }, [inView, muted, reducedMotion, tryPlay]);
 
   if (media.placeholder) {
     return (
@@ -106,21 +150,42 @@ export function CinematicPlayer({
       <video
         ref={videoRef}
         poster={media.poster}
-        preload="metadata"
+        preload="auto"
         playsInline
         muted={muted}
+        loop
+        autoPlay={!reducedMotion}
         aria-label={media.alt}
         onClick={togglePlay}
         className="absolute inset-0 h-full w-full cursor-pointer object-cover"
         crossOrigin={media.captions ? "anonymous" : undefined}
       >
-        <source src={media.src} />
+        <source src={media.src} type="video/mp4" />
         {media.captions && (
-          <track kind="captions" src={media.captions} srcLang="en" label="English" default />
+          <track
+            kind="captions"
+            src={media.captions}
+            srcLang="en"
+            label="English"
+            default
+          />
         )}
       </video>
 
-      {/* Big initial play affordance */}
+      {/* Unmute cue while autoplaying silent */}
+      {started && muted && !reducedMotion && (
+        <button
+          type="button"
+          onClick={() => {
+            setMuted(false);
+            tryPlay();
+          }}
+          className="bg-ink/70 text-bone hover:bg-ember hover:text-ink absolute top-4 right-4 z-[1] rounded-sm px-3 py-2 font-mono text-[0.65rem] tracking-widest uppercase backdrop-blur-sm transition-colors"
+        >
+          Unmute
+        </button>
+      )}
+
       {!started && (
         <button
           type="button"
@@ -137,7 +202,6 @@ export function CinematicPlayer({
         </button>
       )}
 
-      {/* Control bar */}
       <div
         className={cx(
           "absolute inset-x-0 bottom-0 flex items-center gap-3 bg-gradient-to-t from-black/80 to-transparent px-4 pt-10 pb-3 transition-opacity",

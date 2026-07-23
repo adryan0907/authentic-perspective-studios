@@ -19,15 +19,19 @@ export function youtubeId(url: string): string | null {
   return match ? match[1] : null;
 }
 
-/** Privacy-friendly embed URL for external players. */
+/** Privacy-friendly embed URL for external players — muted autoplay on. */
 export function embedUrl(media: MediaItem): string | null {
   if (media.type === "vimeo") {
     const id = vimeoId(media.url);
-    return id ? `https://player.vimeo.com/video/${id}?dnt=1` : null;
+    return id
+      ? `https://player.vimeo.com/video/${id}?dnt=1&autoplay=1&muted=1&loop=1&background=0`
+      : null;
   }
   if (media.type === "youtube") {
     const id = youtubeId(media.url);
-    return id ? `https://www.youtube-nocookie.com/embed/${id}?rel=0` : null;
+    return id
+      ? `https://www.youtube-nocookie.com/embed/${id}?rel=0&autoplay=1&mute=1&loop=1&playlist=${id}`
+      : null;
   }
   return null;
 }

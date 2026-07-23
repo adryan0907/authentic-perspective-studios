@@ -48,7 +48,7 @@ export function ResponsiveVideo({
         setInView(entry.isIntersecting);
         if (entry.isIntersecting) setShouldLoad(true);
       },
-      { rootMargin: "200px" },
+      { rootMargin: "400px", threshold: 0.01 },
     );
     observer.observe(node);
     return () => observer.disconnect();
@@ -106,7 +106,7 @@ export function ResponsiveVideo({
           autoPlay={playing}
           loop
           playsInline
-          preload={priority ? "auto" : "metadata"}
+          preload={priority || inView ? "auto" : "metadata"}
           poster={media.poster}
           aria-label={media.alt}
           className="absolute inset-0 h-full w-full object-cover"

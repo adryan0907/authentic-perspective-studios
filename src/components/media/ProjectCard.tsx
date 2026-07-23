@@ -1,17 +1,26 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import type { Project } from "@/types/content";
+import type { Project, VideoMedia } from "@/types/content";
 import { cx } from "@/lib/utils";
 import { Media } from "./Media";
 import { AutoplayPreview } from "./AutoplayPreview";
 import { usePrefersReducedMotion } from "@/lib/hooks";
 
+function ambientVideoFor(project: Project): VideoMedia | undefined {
+  if (project.previewVideo && !project.previewVideo.placeholder) {
+    return project.previewVideo;
+  }
+  return project.gallery.find(
+    (item): item is VideoMedia =>
+      item.type === "video" && !item.placeholder,
+  );
+}
+
 /**
- * Editorial project card. Hover starts the muted preview clip (when one
- * exists) and flips the title from outline to filled type. All information
- * is always visible, so nothing depends on hover.
+ * Editorial project card. Ambient video plays as soon as the card is in view
+ * so the archive feels alive on touch devices too.
  */
 export function ProjectCard({
   project,
@@ -27,8 +36,22 @@ export function ProjectCard({
   titleClassName?: string;
 }) {
   const reducedMotion = usePrefersReducedMotion();
+  const mediaRef = useRef<HTMLDivElement>(null);
   const [hovered, setHovered] = useState(false);
-  const showPreview = hovered && !reducedMotion && !!project.previewVideo;
+  const [inView, setInView] = useState(false);
+  const ambient = ambientVideoFor(project);
+  const showPreview = !reducedMotion && !!ambient && inView;
+
+  useEffect(() => {
+    const node = mediaRef.current;
+    if (!node) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      { rootMargin: "160px", threshold: 0.12 },
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <Link
@@ -40,7 +63,7 @@ export function ProjectCard({
       onBlur={() => setHovered(false)}
       className={cx("group block", className)}
     >
-      <div className="relative overflow-hidden">
+      <div ref={mediaRef} className="relative overflow-hidden">
         <div
           className={cx(
             "transition-transform duration-700 ease-[var(--ease-out-soft)]",
@@ -55,7 +78,7 @@ export function ProjectCard({
           />
         </div>
 
-        {project.previewVideo && (
+        {ambient && (
           <div
             className={cx(
               "absolute inset-0 transition-opacity duration-500",
@@ -63,7 +86,7 @@ export function ProjectCard({
             )}
           >
             <AutoplayPreview
-              media={project.previewVideo}
+              media={ambient}
               label={project.title}
               palette={project.placeholderPalette}
               active={showPreview}
