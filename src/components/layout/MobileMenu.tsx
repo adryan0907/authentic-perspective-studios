@@ -8,12 +8,13 @@ import { siteConfig } from "@/data/site";
 import { duration, easing, stagger } from "@/lib/motion";
 import { cx } from "@/lib/utils";
 import { usePrefersReducedMotion } from "@/lib/hooks";
+import { KineticLabel } from "@/components/ui/KineticLabel";
 
 const menuLinks = [{ label: "Home", href: "/" }, ...siteConfig.nav];
 
 /**
  * Full-screen mobile menu with focus trapping, Escape support and body
- * scroll locking while open.
+ * scroll locking while open. Slate-indexed links match the desktop nav.
  */
 export function MobileMenu({
   open,
@@ -26,7 +27,6 @@ export function MobileMenu({
   const panelRef = useRef<HTMLDivElement>(null);
   const reducedMotion = usePrefersReducedMotion();
 
-  // Scroll lock + focus management.
   useEffect(() => {
     if (!open) return;
 
@@ -76,41 +76,75 @@ export function MobileMenu({
           role="dialog"
           aria-modal="true"
           aria-label="Menu"
-          initial={reducedMotion ? { opacity: 0 } : { clipPath: "inset(0 0 100% 0)" }}
-          animate={reducedMotion ? { opacity: 1 } : { clipPath: "inset(0 0 0% 0)" }}
-          exit={reducedMotion ? { opacity: 0 } : { clipPath: "inset(0 0 100% 0)" }}
+          initial={
+            reducedMotion ? { opacity: 0 } : { clipPath: "inset(0 0 100% 0)" }
+          }
+          animate={
+            reducedMotion ? { opacity: 1 } : { clipPath: "inset(0 0 0% 0)" }
+          }
+          exit={
+            reducedMotion ? { opacity: 0 } : { clipPath: "inset(0 0 100% 0)" }
+          }
           transition={{ duration: duration.base, ease: easing.inOut }}
           className="bg-ink fixed inset-0 z-[120] flex flex-col overflow-y-auto pt-24 pb-[max(2rem,env(safe-area-inset-bottom))] md:hidden"
         >
-          <nav aria-label="Mobile" className="px-gutter flex flex-col gap-1">
+          <div className="px-gutter mb-8 flex items-end justify-between gap-4">
+            <p className="text-meta text-stone font-mono tracking-[0.22em] uppercase">
+              {siteConfig.location.city} · {siteConfig.location.countryCode}
+            </p>
+            <p className="text-meta text-stone/60 font-mono tracking-widest uppercase">
+              Menu
+            </p>
+          </div>
+
+          <nav aria-label="Mobile" className="px-gutter flex flex-col">
             {menuLinks.map((item, index) => {
               const active =
                 item.href === "/"
                   ? pathname === "/"
                   : pathname.startsWith(item.href);
+              const n = String(index).padStart(2, "0");
               return (
                 <motion.div
                   key={item.href}
-                  initial={reducedMotion ? false : { opacity: 0, y: 24 }}
+                  initial={reducedMotion ? false : { opacity: 0, y: 28 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{
                     duration: duration.base,
                     ease: easing.out,
-                    delay: 0.15 + index * stagger.base,
+                    delay: 0.12 + index * stagger.base,
                   }}
                 >
                   <Link
                     href={item.href}
                     aria-current={active ? "page" : undefined}
                     className={cx(
-                      "font-serif flex items-baseline gap-4 py-3 text-5xl tracking-tight",
+                      "border-line group flex items-baseline justify-between gap-6 border-b py-5",
                       active ? "text-ember" : "text-bone",
                     )}
                   >
-                    {item.label}
-                    {active && (
-                      <span aria-hidden className="bg-ember block h-2 w-2 rounded-full" />
-                    )}
+                    <span className="flex items-baseline gap-5">
+                      <span
+                        className={cx(
+                          "font-mono text-xs tracking-widest",
+                          active ? "text-ember" : "text-stone/45",
+                        )}
+                      >
+                        {n}
+                      </span>
+                      <span className="font-serif text-4xl tracking-tight sm:text-5xl">
+                        {item.label}
+                      </span>
+                    </span>
+                    <span
+                      aria-hidden
+                      className={cx(
+                        "font-mono text-sm tracking-widest transition-transform duration-300 group-hover:translate-x-1",
+                        active ? "text-ember" : "text-stone/40",
+                      )}
+                    >
+                      →
+                    </span>
                   </Link>
                 </motion.div>
               );
@@ -125,16 +159,19 @@ export function MobileMenu({
           >
             <Link
               href="/contact"
-              className="bg-ember text-ink rounded-sm px-5 py-4 text-center text-base font-semibold"
+              className="bg-ember text-ink flex h-14 items-center justify-center overflow-hidden rounded-sm text-base font-semibold"
             >
-              Start a project
+              <KineticLabel>Start a project</KineticLabel>
             </Link>
 
             <div className="flex flex-col gap-2">
               <span className="text-meta text-stone font-mono tracking-widest uppercase">
                 Contact
               </span>
-              <a href={`mailto:${siteConfig.email}`} className="text-bone text-sm">
+              <a
+                href={`mailto:${siteConfig.email}`}
+                className="text-bone text-sm"
+              >
                 {siteConfig.email}
               </a>
               <a
@@ -145,9 +182,6 @@ export function MobileMenu({
               >
                 Message on WhatsApp
               </a>
-              <span className="text-stone text-sm">
-                {siteConfig.location.city}, {siteConfig.location.country}
-              </span>
             </div>
 
             <ul className="flex gap-6" aria-label="Social links">

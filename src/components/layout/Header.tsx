@@ -3,17 +3,21 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { motion } from "motion/react";
 import { siteConfig } from "@/data/site";
 import { cx } from "@/lib/utils";
 import { KineticLabel } from "@/components/ui/KineticLabel";
+import { usePrefersReducedMotion } from "@/lib/hooks";
 import { MobileMenu } from "./MobileMenu";
 
 /**
- * Fixed global navigation. Transparent over the hero, then gains a dark
- * scrim once the page scrolls so it stays legible over any media beneath it.
+ * Cinematic slate navigation — brand-led, asymmetrical, and sharper than a
+ * centered-logo agency bar. Transparent over the hero; floats as an inset
+ * panel once the page scrolls.
  */
 export function Header() {
   const pathname = usePathname();
+  const reducedMotion = usePrefersReducedMotion();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -24,29 +28,37 @@ export function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Close the menu when the route changes (state adjusted during render).
   const [prevPathname, setPrevPathname] = useState(pathname);
   if (prevPathname !== pathname) {
     setPrevPathname(pathname);
     setMenuOpen(false);
   }
 
+  const elevated = scrolled || menuOpen;
+
   return (
     <>
       <header
         className={cx(
-          "fixed inset-x-0 top-0 transition-colors duration-500",
+          "fixed inset-x-0 top-0 transition-[padding] duration-500 ease-[var(--ease-out-soft)]",
           menuOpen ? "z-[130]" : "z-[100]",
-          scrolled || menuOpen
-            ? "bg-ink/85 backdrop-blur-md"
-            : "bg-transparent",
+          elevated ? "px-3 pt-3 md:px-5 md:pt-4" : "px-0 pt-0",
         )}
       >
-        <div className="px-gutter flex h-16 items-center justify-between gap-6 md:h-20">
+        <div
+          className={cx(
+            "flex items-center justify-between gap-4 transition-all duration-500 ease-[var(--ease-out-soft)] md:gap-8",
+            elevated
+              ? "border-line bg-ink/90 h-14 rounded-sm border px-4 backdrop-blur-xl md:h-16 md:px-6"
+              : "h-16 bg-transparent px-gutter md:h-20",
+          )}
+        >
+          {/* Brand — primary signal, never centered-logo agency template */}
           <Link
             href="/"
-            className="relative z-[1] shrink-0"
+            className="group relative z-[1] flex shrink-0 items-center gap-3"
             aria-label="Authentic Perspective — home"
+            data-cursor="Home"
           >
             {/* eslint-disable-next-line @next/next/no-img-element -- keep alpha intact; next/image was flattening transparent pixels to black */}
             <img
@@ -54,62 +66,110 @@ export function Header() {
               alt="Authentic Perspective"
               width={168}
               height={52}
-              className="h-8 w-auto md:h-9"
+              className="h-8 w-auto transition-opacity duration-300 group-hover:opacity-90 md:h-9"
               decoding="async"
             />
+            <span
+              aria-hidden
+              className="bg-line hidden h-8 w-px md:block"
+            />
+            <span className="text-meta text-stone/80 hidden font-mono tracking-[0.18em] uppercase md:block">
+              {siteConfig.location.city}
+            </span>
           </Link>
 
-          <nav aria-label="Primary" className="hidden items-center gap-8 md:flex">
-            {siteConfig.nav.map((item) => {
-              const active = pathname.startsWith(item.href);
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  aria-current={active ? "page" : undefined}
-                  className={cx(
-                    "text-meta font-mono tracking-widest uppercase transition-colors",
-                    active ? "text-ember" : "text-bone/80 hover:text-bone",
-                  )}
-                >
-                  {item.label}
-                </Link>
-              );
-            })}
+          {/* Desktop nav — slate-indexed links with sliding active mark */}
+          <nav
+            aria-label="Primary"
+            className="absolute left-1/2 hidden -translate-x-1/2 items-center md:flex"
+          >
+            <ul className="flex items-center gap-1">
+              {siteConfig.nav.map((item, index) => {
+                const active = pathname.startsWith(item.href);
+                const n = String(index + 1).padStart(2, "0");
+                return (
+                  <li key={item.href} className="relative">
+                    <Link
+                      href={item.href}
+                      aria-current={active ? "page" : undefined}
+                      data-cursor={item.label}
+                      className={cx(
+                        "relative flex items-baseline gap-2 px-4 py-2 transition-colors duration-300",
+                        active
+                          ? "text-bone"
+                          : "text-bone/55 hover:text-bone",
+                      )}
+                    >
+                      <span
+                        className={cx(
+                          "font-mono text-[0.58rem] tracking-widest transition-colors",
+                          active ? "text-ember" : "text-stone/50",
+                        )}
+                      >
+                        {n}
+                      </span>
+                      <span className="text-meta font-mono tracking-[0.16em] uppercase">
+                        {item.label}
+                      </span>
+                      {active && !reducedMotion && (
+                        <motion.span
+                          layoutId="nav-active"
+                          className="bg-ember absolute inset-x-3 -bottom-0.5 h-px"
+                          transition={{
+                            type: "spring",
+                            stiffness: 380,
+                            damping: 32,
+                          }}
+                        />
+                      )}
+                      {active && reducedMotion && (
+                        <span className="bg-ember absolute inset-x-3 -bottom-0.5 h-px" />
+                      )}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </nav>
+
+          {/* Actions */}
+          <div className="relative z-[1] flex items-center gap-3">
             <Link
               href="/contact"
               data-cursor="Connect"
-              className="border-bone/30 text-bone hover:border-ember hover:bg-ember hover:text-ink inline-flex h-9 w-[9.75rem] items-center overflow-hidden rounded-sm border px-3 text-sm font-medium transition-colors"
+              className="bg-ember text-ink hover:bg-bone hidden h-10 w-[10.5rem] items-center justify-center overflow-hidden rounded-sm text-sm font-semibold transition-colors duration-300 md:inline-flex"
             >
               <KineticLabel>Start a project</KineticLabel>
             </Link>
-          </nav>
 
-          <button
-            type="button"
-            onClick={() => setMenuOpen((open) => !open)}
-            aria-expanded={menuOpen}
-            aria-controls="mobile-menu"
-            className="text-bone relative z-[1] -mr-2 flex h-11 w-11 items-center justify-center md:hidden"
-          >
-            <span className="sr-only">{menuOpen ? "Close menu" : "Open menu"}</span>
-            <span aria-hidden className="relative block h-3 w-6">
-              <span
-                className={cx(
-                  "bg-bone absolute left-0 block h-0.5 w-6 origin-center transition-transform duration-300",
-                  menuOpen ? "top-1/2 -translate-y-1/2 rotate-45" : "top-0",
-                )}
-              />
-              <span
-                className={cx(
-                  "bg-bone absolute left-0 block h-0.5 w-6 origin-center transition-transform duration-300",
-                  menuOpen
-                    ? "top-1/2 -translate-y-1/2 -rotate-45"
-                    : "bottom-0",
-                )}
-              />
-            </span>
-          </button>
+            <button
+              type="button"
+              onClick={() => setMenuOpen((open) => !open)}
+              aria-expanded={menuOpen}
+              aria-controls="mobile-menu"
+              className="text-bone border-line hover:border-bone/40 relative flex h-10 items-center gap-2.5 rounded-sm border px-3 md:hidden"
+            >
+              <span className="text-meta font-mono tracking-[0.16em] uppercase">
+                {menuOpen ? "Close" : "Menu"}
+              </span>
+              <span aria-hidden className="relative block h-2.5 w-4">
+                <span
+                  className={cx(
+                    "bg-bone absolute left-0 block h-px w-4 origin-center transition-transform duration-300",
+                    menuOpen ? "top-1/2 -translate-y-1/2 rotate-45" : "top-0",
+                  )}
+                />
+                <span
+                  className={cx(
+                    "bg-bone absolute left-0 block h-px w-4 origin-center transition-all duration-300",
+                    menuOpen
+                      ? "top-1/2 -translate-y-1/2 -rotate-45"
+                      : "bottom-0 w-2.5",
+                  )}
+                />
+              </span>
+            </button>
+          </div>
         </div>
       </header>
 
