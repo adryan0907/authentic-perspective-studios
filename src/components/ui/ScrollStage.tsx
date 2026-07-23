@@ -5,60 +5,96 @@ import { motion, useScroll, useTransform } from "motion/react";
 import { usePrefersReducedMotion } from "@/lib/hooks";
 import { cx } from "@/lib/utils";
 
+type StackMode = "pin" | "flow";
+
 /**
- * Homepage section wrapper. Keeps normal document scroll so every band can be
- * read top-to-bottom; optionally softens slightly as it leaves the viewport.
+ * Homepage section stacking.
+ *
+ * - `pin`  — short, roughly one-viewport bands. Sticky so the next section
+ *            can slide over them (overflow effect). Safe because content fits.
+ * - `flow` — tall bands (work, disciplines, process…). Normal document scroll
+ *            so every project / block can be read top-to-bottom, while still
+ *            covering whatever pin sits underneath when they arrive.
  */
 export function ScrollStage({
   children,
   className,
+  zIndex = 1,
+  mode = "flow",
   "aria-labelledby": ariaLabelledBy,
   "aria-label": ariaLabel,
 }: {
   children: ReactNode;
   className?: string;
-  /** @deprecated Ignored — kept so existing call sites type-check during cleanup. */
   zIndex?: number;
-  /** @deprecated Ignored — sticky stacking was removed for scrollability. */
+  mode?: StackMode;
+  /** @deprecated Use `mode` instead. */
   stack?: boolean;
   "aria-labelledby"?: string;
   "aria-label"?: string;
 }) {
   const reducedMotion = usePrefersReducedMotion();
   const ref = useRef<HTMLElement>(null);
+  const pin = mode === "pin" && !reducedMotion;
+
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start end", "end start"],
+    offset: pin
+      ? ["start start", "end start"]
+      : ["start end", "end start"],
   });
 
-  const opacity = useTransform(
+  // Pin panels compress only as the next band covers them.
+  const pinScale = useTransform(scrollYProgress, [0, 0.7, 1], [1, 1, 0.96]);
+  const pinOpacity = useTransform(scrollYProgress, [0, 0.75, 1], [1, 1, 0.55]);
+
+  // Flow sections stay fully readable — only a whisper of fade at edges.
+  const flowOpacity = useTransform(
     scrollYProgress,
-    [0, 0.08, 0.92, 1],
-    [0.85, 1, 1, 0.85],
+    [0, 0.06, 0.94, 1],
+    [0.92, 1, 1, 0.92],
   );
 
-  if (reducedMotion) {
+  if (reducedMotion || !pin) {
     return (
-      <section
+      <motion.section
         ref={ref}
-        className={className}
+        style={
+          reducedMotion
+            ? { zIndex }
+            : { zIndex, opacity: flowOpacity }
+        }
+        className={cx("relative", className)}
         aria-labelledby={ariaLabelledBy}
         aria-label={ariaLabel}
       >
         {children}
-      </section>
+      </motion.section>
     );
   }
 
   return (
-    <motion.section
+    <section
       ref={ref}
-      style={{ opacity }}
-      className={cx("relative", className)}
+      style={{ zIndex }}
+      className="sticky top-0 isolate"
       aria-labelledby={ariaLabelledBy}
       aria-label={ariaLabel}
     >
-      {children}
-    </motion.section>
+      {/*
+        Transforms stay on the inner node — applying them to the sticky
+        element itself breaks sticky positioning on Safari.
+      */}
+      <motion.div
+        style={{ scale: pinScale, opacity: pinOpacity }}
+        className={cx(
+          "origin-top will-change-transform",
+          "flex min-h-[100svh] flex-col justify-center",
+          className,
+        )}
+      >
+        {children}
+      </motion.div>
+    </section>
   );
 }

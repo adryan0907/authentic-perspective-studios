@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { motion } from "motion/react";
+import { useRef, useState } from "react";
+import { motion, useScroll, useTransform } from "motion/react";
 import { heroShowreel, heroShowreelRaw } from "@/data/hero";
 import { duration, easing, stagger } from "@/lib/motion";
 import { cx } from "@/lib/utils";
@@ -40,19 +40,17 @@ function GradeLayer({ paused }: { paused: boolean }) {
             linear-gradient(165deg, #1a120a 0%, #0c0a08 55%, #16100a 100%)`,
         }}
       />
-      {/* Distant horizon glow */}
       <div
         className="absolute inset-x-0 top-[58%] h-px opacity-40"
-        style={{ background: "linear-gradient(90deg, transparent, #e7752f66, transparent)" }}
+        style={{
+          background:
+            "linear-gradient(90deg, transparent, #e7752f66, transparent)",
+        }}
       />
     </div>
   );
 }
 
-/**
- * The alternate perspective: the same scene as flat, ungraded raw footage
- * with viewfinder markings.
- */
 function RawLayer({ paused, playing }: { paused: boolean; playing: boolean }) {
   if (!heroShowreelRaw.placeholder) {
     return (
@@ -80,9 +78,11 @@ function RawLayer({ paused, playing }: { paused: boolean; playing: boolean }) {
       />
       <div
         className="absolute inset-x-0 top-[58%] h-px opacity-30"
-        style={{ background: "linear-gradient(90deg, transparent, #9a938a, transparent)" }}
+        style={{
+          background:
+            "linear-gradient(90deg, transparent, #9a938a, transparent)",
+        }}
       />
-      {/* Viewfinder chrome */}
       <div className="absolute inset-6 border border-white/15 md:inset-10">
         <span className="absolute -top-px -left-px h-4 w-4 border-t-2 border-l-2 border-white/40" />
         <span className="absolute -top-px -right-px h-4 w-4 border-t-2 border-r-2 border-white/40" />
@@ -104,6 +104,14 @@ export function Hero() {
   const reducedMotion = usePrefersReducedMotion();
   const [paused, setPaused] = useState(false);
   const [revealPlaying, setRevealPlaying] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+  const scale = useTransform(scrollYProgress, [0, 0.7, 1], [1, 1, 0.96]);
+  const opacity = useTransform(scrollYProgress, [0, 0.75, 1], [1, 1, 0.55]);
 
   const enter = (delay: number) => ({
     initial: { opacity: 0, y: reducedMotion ? 0 : 28 },
@@ -113,22 +121,31 @@ export function Hero() {
 
   return (
     <section
+      ref={sectionRef}
       aria-label="Introduction"
-      className="relative flex min-h-[100svh] flex-col justify-end overflow-hidden bg-ink"
+      style={{ zIndex: 1 }}
+      className={
+        reducedMotion
+          ? "relative flex min-h-[100svh] flex-col justify-end overflow-hidden bg-ink"
+          : "sticky top-0 isolate flex min-h-[100svh] flex-col justify-end overflow-hidden bg-ink"
+      }
     >
-      <PerspectiveLens
-        base={<GradeLayer paused={paused} />}
-        reveal={<RawLayer paused={paused} playing={revealPlaying} />}
-        baseLabel="Final grade"
-        revealLabel="Raw footage"
-        onRevealEngage={() => setRevealPlaying(true)}
-      />
-
-      {/* Legibility scrim — never blocks the lens */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-3/5 bg-gradient-to-t from-black/80 via-black/30 to-transparent"
-      />
+      <motion.div
+        style={reducedMotion ? undefined : { scale, opacity }}
+        className="absolute inset-0 origin-top will-change-transform"
+      >
+        <PerspectiveLens
+          base={<GradeLayer paused={paused} />}
+          reveal={<RawLayer paused={paused} playing={revealPlaying} />}
+          baseLabel="Final grade"
+          revealLabel="Raw footage"
+          onRevealEngage={() => setRevealPlaying(true)}
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-3/5 bg-gradient-to-t from-black/80 via-black/30 to-transparent"
+        />
+      </motion.div>
 
       <div className="px-gutter pointer-events-none relative z-20 pb-14 md:pb-20">
         <motion.p
@@ -142,9 +159,16 @@ export function Hero() {
           <span className="block overflow-hidden">
             <motion.span
               className="block"
-              initial={{ y: reducedMotion ? 0 : "105%", opacity: reducedMotion ? 0 : 1 }}
+              initial={{
+                y: reducedMotion ? 0 : "105%",
+                opacity: reducedMotion ? 0 : 1,
+              }}
               animate={{ y: "0%", opacity: 1 }}
-              transition={{ duration: duration.base, ease: easing.out, delay: 0.2 }}
+              transition={{
+                duration: duration.base,
+                ease: easing.out,
+                delay: 0.2,
+              }}
             >
               Defining moments.
             </motion.span>
@@ -152,7 +176,10 @@ export function Hero() {
           <span className="block overflow-hidden">
             <motion.span
               className="font-serif text-bone/95 block font-light normal-case italic"
-              initial={{ y: reducedMotion ? 0 : "105%", opacity: reducedMotion ? 0 : 1 }}
+              initial={{
+                y: reducedMotion ? 0 : "105%",
+                opacity: reducedMotion ? 0 : 1,
+              }}
               animate={{ y: "0%", opacity: 1 }}
               transition={{
                 duration: duration.base,
@@ -181,13 +208,16 @@ export function Hero() {
           <MagneticButton href="/work" cursorLabel="Work">
             View selected work
           </MagneticButton>
-          <MagneticButton href="/contact" variant="outline" cursorLabel="Connect">
+          <MagneticButton
+            href="/contact"
+            variant="outline"
+            cursorLabel="Connect"
+          >
             Start a project
           </MagneticButton>
         </motion.div>
       </div>
 
-      {/* Showreel pause control — desktop only; mobile hero keeps CTAs clean */}
       <div className="pointer-events-auto absolute right-8 bottom-8 z-20 hidden md:block">
         <button
           type="button"
@@ -200,7 +230,6 @@ export function Hero() {
         </button>
       </div>
 
-      {/* Scroll cue — quiet pulse that invites the next beat */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -214,7 +243,6 @@ export function Hero() {
         <span className="scroll-cue border-bone/40 block h-8 w-px border-l" />
       </motion.div>
 
-      {/* Interaction cue — desktop only */}
       <motion.p
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

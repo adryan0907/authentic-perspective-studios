@@ -9,6 +9,8 @@ export function StudioIntro() {
   return (
     <ScrollStage
       aria-labelledby="studio-heading"
+      mode="flow"
+      zIndex={6}
       className="bg-ink px-gutter py-section border-line border-t"
     >
       <div className="grid grid-cols-1 items-center gap-12 md:grid-cols-12">

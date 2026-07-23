@@ -33,6 +33,8 @@ export function FinalCta() {
   return (
     <ScrollStage
       aria-label="Start a project"
+      mode="pin"
+      zIndex={8}
       className="bg-ink px-gutter border-line relative overflow-hidden border-t py-32 md:py-44"
     >
       <div ref={panelRef} onPointerMove={onPointerMove} className="relative">

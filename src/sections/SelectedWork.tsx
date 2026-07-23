@@ -24,6 +24,8 @@ export function SelectedWork() {
   return (
     <ScrollStage
       aria-labelledby="work-heading"
+      mode="flow"
+      zIndex={3}
       className="bg-ink-2 px-gutter py-section"
     >
       <div className="mb-14 flex flex-wrap items-end justify-between gap-6 md:mb-20">

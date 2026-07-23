@@ -26,6 +26,8 @@ export function Collaborations() {
   return (
     <ScrollStage
       aria-labelledby="collab-heading"
+      mode="pin"
+      zIndex={7}
       className="bg-ink-2 px-gutter border-line border-t py-16 md:py-20"
     >
       <FadeIn>
