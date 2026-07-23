@@ -162,14 +162,14 @@ export default function RootLayout({
       lang="en"
       className={`${archivo.variable} ${fraunces.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="grain flex min-h-full flex-col">
+      <body className="grain flex min-h-full max-w-full flex-col overflow-x-clip">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(siteJsonLd) }}
         />
         <SkipLink />
         <Header />
-        <main id="main" className="flex-1">
+        <main id="main" className="w-full max-w-full flex-1 overflow-x-clip">
           {children}
         </main>
         <Footer />

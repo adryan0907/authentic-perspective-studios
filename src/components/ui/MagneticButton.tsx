@@ -66,16 +66,16 @@ export function MagneticButton({
       onPointerMove={onPointerMove}
       onPointerLeave={reset}
       style={reducedMotion ? undefined : { x: sx, y: sy }}
-      className="inline-block"
+      className="inline-block max-w-full"
     >
       <Link
         href={href}
         data-cursor={cursor || undefined}
         className={cx(
-          "inline-flex min-h-12 items-center justify-center overflow-hidden rounded-sm px-7 py-3 text-base transition-colors duration-300",
+          "inline-flex min-h-12 max-w-full items-center justify-center overflow-hidden rounded-sm px-7 py-3 text-base transition-colors duration-300",
           variants[variant],
           variant === "primary" && !reducedMotion && "cta-idle-pulse",
-          useKinetic && label && "w-[min(100%,14.5rem)]",
+          useKinetic && label && "w-56",
           className,
         )}
       >

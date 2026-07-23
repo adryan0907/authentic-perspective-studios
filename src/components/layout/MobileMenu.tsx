@@ -159,7 +159,7 @@ export function MobileMenu({
           >
             <Link
               href="/contact"
-              className="bg-ember text-ink flex h-14 items-center justify-center overflow-hidden rounded-sm text-base font-semibold"
+              className="bg-ember text-ink flex h-14 w-full max-w-full items-center justify-center overflow-hidden rounded-sm text-base font-semibold"
             >
               <KineticLabel>Start a project</KineticLabel>
             </Link>

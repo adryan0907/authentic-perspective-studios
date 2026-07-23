@@ -5,9 +5,9 @@ import { cx } from "@/lib/utils";
 import { usePrefersReducedMotion } from "@/lib/hooks";
 
 /**
- * Continuous horizontal marquee for short CTA labels. Duplicates the string
- * so the loop is seamless; falls back to a static label under reduced motion.
- * Parent should set a fixed width (and usually overflow-hidden).
+ * Continuous horizontal marquee for short CTA labels.
+ * The visible track is absolutely positioned so the tripled copy never
+ * expands the document width (critical on mobile).
  */
 export function KineticLabel({
   children,
@@ -23,15 +23,23 @@ export function KineticLabel({
   }
 
   return (
-    <span className={cx("relative block w-full overflow-hidden", className)}>
-      <span className="cta-marquee inline-flex whitespace-nowrap will-change-transform">
+    <span
+      className={cx(
+        "relative block w-full max-w-full overflow-hidden",
+        className,
+      )}
+    >
+      {/* Single invisible copy reserves line box height without widening */}
+      <span className="invisible whitespace-nowrap" aria-hidden>
+        {children}
+      </span>
+      <span
+        aria-hidden
+        className="cta-marquee absolute top-1/2 left-0 inline-flex -translate-y-1/2 whitespace-nowrap will-change-transform"
+      >
         <span className="pr-5">{children}</span>
-        <span className="pr-5" aria-hidden>
-          {children}
-        </span>
-        <span className="pr-5" aria-hidden>
-          {children}
-        </span>
+        <span className="pr-5">{children}</span>
+        <span className="pr-5">{children}</span>
       </span>
       <span className="sr-only">{children}</span>
     </span>

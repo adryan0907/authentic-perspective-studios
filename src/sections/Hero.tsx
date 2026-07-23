@@ -176,7 +176,7 @@ export function Hero() {
 
         <motion.div
           {...enter(0.7)}
-          className="pointer-events-auto mt-9 flex flex-wrap items-center gap-4"
+          className="pointer-events-auto mt-9 flex max-w-full flex-wrap items-center gap-3 sm:gap-4"
         >
           <MagneticButton href="/work" cursorLabel="Work">
             View selected work

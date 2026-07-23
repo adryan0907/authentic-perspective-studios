@@ -47,7 +47,7 @@ export function Header() {
       >
         <div
           className={cx(
-            "flex items-center justify-between gap-4 transition-all duration-500 ease-[var(--ease-out-soft)] md:gap-8",
+            "relative flex w-full max-w-full items-center justify-between gap-4 transition-all duration-500 ease-[var(--ease-out-soft)] md:gap-8",
             elevated
               ? "border-line bg-ink/90 h-14 rounded-sm border px-4 backdrop-blur-xl md:h-16 md:px-6"
               : "h-16 bg-transparent px-gutter md:h-20",
@@ -66,7 +66,7 @@ export function Header() {
               alt="Authentic Perspective"
               width={168}
               height={52}
-              className="h-8 w-auto transition-opacity duration-300 group-hover:opacity-90 md:h-9"
+              className="h-7 w-auto max-w-[min(42vw,9.5rem)] transition-opacity duration-300 group-hover:opacity-90 sm:h-8 sm:max-w-none md:h-9"
               decoding="async"
             />
             <span
