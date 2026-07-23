@@ -4,6 +4,7 @@ import { siteConfig } from "@/data/site";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { SkipLink } from "@/components/layout/SkipLink";
+import { WhatsAppFab } from "@/components/layout/WhatsAppFab";
 import { CustomCursor } from "@/components/ui/CustomCursor";
 import "./globals.css";
 
@@ -173,6 +174,7 @@ export default function RootLayout({
           {children}
         </main>
         <Footer />
+        <WhatsAppFab />
         <CustomCursor />
       </body>
     </html>
