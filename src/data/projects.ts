@@ -157,7 +157,6 @@ export const projects: Project[] = [
         src: "/media/projects/woonboerderij/film.mp4",
         poster: "/media/projects/woonboerderij/film-poster.webp",
         alt: "Woonboerderij Schijndel — brand documentary",
-        placeholder: true,
       },
       {
         type: "image",
