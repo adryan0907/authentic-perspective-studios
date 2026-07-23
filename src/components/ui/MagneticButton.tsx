@@ -6,7 +6,6 @@ import { motion, useMotionValue, useSpring } from "motion/react";
 import { spring } from "@/lib/motion";
 import { cx } from "@/lib/utils";
 import { usePrefersReducedMotion } from "@/lib/hooks";
-import { isKineticText } from "./KineticLabel";
 
 const variants = {
   primary:
@@ -40,8 +39,8 @@ export function MagneticButton({
   const sx = useSpring(x, spring.soft);
   const sy = useSpring(y, spring.soft);
 
-  const label = isKineticText(children) ? children : undefined;
-  const cursor = cursorLabel ?? label;
+  const cursor =
+    cursorLabel ?? (typeof children === "string" ? children : undefined);
 
   const onPointerMove = (event: React.PointerEvent) => {
     if (reducedMotion || event.pointerType !== "mouse" || !ref.current) return;
