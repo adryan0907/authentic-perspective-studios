@@ -91,7 +91,6 @@ export const projects: Project[] = [
         src: "/media/projects/roxmeister/film.mp4",
         poster: "/media/projects/roxmeister/cover.webp",
         alt: "ROXMEISTER — supermoto recap film",
-        placeholder: true,
       },
       {
         type: "image",
