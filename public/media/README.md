@@ -6,7 +6,6 @@ Ship web-optimized assets under each project folder (`cover.webp`, stills, and f
 
 These exceed GitHub’s 100MB limit. Keep them local until compressed or replaced with Vimeo:
 
-- `projects/boost-innovation-grant/film.mp4`
 - `projects/roxmeister/film.mp4`
 
 Covers and stills for those projects are deployed; the main film is omitted until a replacement is ready.

@@ -347,7 +347,6 @@ export const projects: Project[] = [
         src: "/media/projects/boost-innovation-grant/film.mp4",
         poster: "/media/projects/boost-innovation-grant/episode-poster.webp",
         alt: "Boost Innovation Grant — surprise recap film",
-        placeholder: true,
       },
       {
         type: "image",

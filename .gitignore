@@ -44,7 +44,6 @@ next-env.d.ts
 .verify/
 
 # Oversized project films (>100MB) — compress or move to Vimeo before committing
-public/media/projects/boost-innovation-grant/film.mp4
 public/media/projects/roxmeister/film.mp4
 
 # Brand intermediates
