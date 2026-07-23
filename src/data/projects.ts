@@ -32,6 +32,17 @@ import type { Project } from "@/types/content";
  *   { type: "vimeo",   url: "https://vimeo.com/123456789",  alt: "..." }
  *   { type: "youtube", url: "https://youtu.be/XXXXXXXXXXX", alt: "..." }
  *
+ * HOW TO ADD AN INSTAGRAM REEL / POST
+ *   { type: "instagram", url: "https://www.instagram.com/reel/XXXX/",
+ *     alt: "What the reel shows", aspect: "9/16" }
+ *
+ * HOW TO ADD IMPACT METRICS (optional, House of Yellow style)
+ *   impact: [
+ *     { label: "Views", value: "1.2M" },
+ *     { label: "Delivery", value: "2 wks production" },
+ *   ]
+ *   Only include numbers you can stand behind.
+ *
  * HOW TO MARK A PROJECT AS A CONCEPT
  *   Set `status: "concept"`. The site labels it "Studio concept" everywhere
  *   so it is never mistaken for delivered client work.
@@ -187,6 +198,74 @@ export const projects: Project[] = [
     seoDescription:
       "Documentary brand story for Woonboerderij Schijndel — a human-centred film about a unique living and care environment, by Authentic Perspective.",
     placeholderPalette: ["#2e2415", "#100d08"],
+  },
+
+  {
+    slug: "cadushi-residents",
+    title: "Cadushi Residents",
+    year: 2025,
+    status: "commission",
+    featured: true,
+    discipline: "film",
+    categories: ["events", "brand-content", "documentary"],
+    categoryLabel: "Social / Interviews",
+    services: [
+      "Series Concept",
+      "Creative Interviews",
+      "Social Direction",
+      "Edit & Grade",
+    ],
+    client: "Cadushi Music",
+    location: "Eindhoven, Netherlands",
+    description:
+      "A resident DJ interview series for Eindhoven techno collective Cadushi — starting with the ROBOITH pilot reel.",
+    summary:
+      "Cadushi Music wanted to bring their community closer to the people behind the decks. We built a social-first interview series with the in-house residents who shape the collective’s sound — no stage lights, no crowd noise, just conversations about music, process and belonging.",
+    challenge:
+      "Techno collectives are often only visible on peak-night energy. Cadushi needed content that still felt like Cadushi — raw, personal, and culturally sharp — while working as Instagram Reels that introduce residents to both longtime dancers and new listeners.",
+    approach:
+      "We designed a quiet interview format for the residents who define the night: seated conversations, intimate framing, and edits cut for social delivery. The pilot episode features ROBOITH and sets the tone for the wider resident series.",
+    outcome:
+      "The ROBOITH pilot launched on Cadushi’s Instagram as episode one of the resident series, credited Authentic Perspective on the post, and sparked strong community response in-thread — positioning the collective’s residents as people, not only line-up names.",
+    impact: [
+      { label: "Format", value: "Resident series" },
+      { label: "Pilot", value: "ROBOITH" },
+      { label: "Platform", value: "Instagram Reels" },
+      { label: "Delivery", value: "Social-first edit" },
+    ],
+    cover: {
+      type: "image",
+      src: "/media/projects/cadushi-residents/cover.webp",
+      alt: "Cadushi Music resident interview — ROBOITH pilot still",
+      aspect: "4/5",
+      placeholder: true,
+    },
+    heroMedia: {
+      type: "image",
+      src: "/media/projects/cadushi-residents/hero.webp",
+      alt: "Cadushi Music resident interview series — quiet conversation framing",
+      aspect: "21/9",
+      placeholder: true,
+    },
+    gallery: [
+      {
+        type: "instagram",
+        url: "https://www.instagram.com/reel/DPldboiiH2e/",
+        alt: "Cadushi Music — PILOT: ROBOITH resident interview reel",
+        caption: "PILOT : ROBOITH — Cadushi resident interview series",
+        aspect: "9/16",
+      },
+    ],
+    credits: [
+      { role: "Concept & Interviews", name: "Authentic Perspective" },
+      { role: "Camera & Edit", name: "Authentic Perspective" },
+      { role: "Client", name: "Cadushi Music" },
+      { role: "Pilot resident", name: "ROBOITH" },
+    ],
+    externalLink: "https://www.instagram.com/reel/DPldboiiH2e/",
+    seoDescription:
+      "Cadushi Music resident DJ interview series — social content and creative interviews for Eindhoven’s techno collective, by Authentic Perspective.",
+    placeholderPalette: ["#1a1420", "#08060c"],
   },
 
   {

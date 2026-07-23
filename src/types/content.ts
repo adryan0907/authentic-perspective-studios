@@ -63,7 +63,24 @@ export interface YouTubeMedia extends MediaBase {
   poster?: string;
 }
 
-export type MediaItem = ImageMedia | VideoMedia | VimeoMedia | YouTubeMedia;
+/** An Instagram post or reel. Paste the public permalink. */
+export interface InstagramMedia extends MediaBase {
+  type: "instagram";
+  url: string;
+}
+
+export type MediaItem =
+  | ImageMedia
+  | VideoMedia
+  | VimeoMedia
+  | YouTubeMedia
+  | InstagramMedia;
+
+/** One measurable or descriptive impact line — House of Yellow style proof. */
+export interface ProjectImpact {
+  label: string;
+  value: string;
+}
 
 /** One line in the credits block of a case study. */
 export interface Credit {
@@ -148,6 +165,11 @@ export interface Project {
   credits: Credit[];
   externalLink?: string;
   prototypeLink?: string;
+  /**
+   * Optional proof lines shown under cards and on the case study
+   * (views, delivery time, format, etc.). Only include real figures.
+   */
+  impact?: ProjectImpact[];
   ux?: UxDetails;
   ai?: AiDetails;
   seoTitle?: string;

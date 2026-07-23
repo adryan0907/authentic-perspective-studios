@@ -116,6 +116,20 @@ export function ProjectCard({
         <p className="text-meta text-stone/80 mt-2 font-mono tracking-widest uppercase">
           {project.categoryLabel} · {project.year}
         </p>
+        {project.impact && project.impact.length > 0 && (
+          <dl className="border-line mt-3 grid grid-cols-2 gap-x-4 gap-y-2 border-t pt-3">
+            {project.impact.slice(0, 4).map((item) => (
+              <div key={`${item.label}-${item.value}`}>
+                <dt className="text-meta text-stone/60 font-mono tracking-widest uppercase">
+                  {item.label}
+                </dt>
+                <dd className="text-bone/90 mt-0.5 text-xs font-medium sm:text-sm">
+                  {item.value}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        )}
       </div>
     </Link>
   );

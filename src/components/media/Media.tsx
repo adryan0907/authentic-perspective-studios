@@ -4,6 +4,7 @@ import { aspectToCss, embedUrl } from "@/lib/media";
 import { cx } from "@/lib/utils";
 import { MediaPlaceholder } from "./MediaPlaceholder";
 import { ResponsiveVideo } from "./ResponsiveVideo";
+import { InstagramEmbed } from "./InstagramEmbed";
 
 /**
  * Universal renderer for any MediaItem: local image, local video, Vimeo or
@@ -31,7 +32,9 @@ export function Media({
 }) {
   if (media.placeholder) {
     const path =
-      media.type === "image" || media.type === "video" ? media.src : media.url;
+      media.type === "image" || media.type === "video"
+        ? media.src
+        : media.url;
     return (
       <MediaPlaceholder
         label={`${label} — ${media.type}`}
@@ -68,6 +71,16 @@ export function Media({
 
   if (media.type === "video") {
     return <ResponsiveVideo media={media} className={className} fill={fill} />;
+  }
+
+  if (media.type === "instagram") {
+    return (
+      <InstagramEmbed
+        url={media.url}
+        caption={media.caption ?? media.alt}
+        className={className}
+      />
+    );
   }
 
   const src = embedUrl(media);
