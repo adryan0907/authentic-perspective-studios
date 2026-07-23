@@ -237,14 +237,15 @@ export const projects: Project[] = [
       type: "image",
       src: "/media/projects/cadushi-residents/cover.webp",
       alt: "Cadushi Music resident interview — ROBOITH pilot still",
-      aspect: "9/16",
+      // Homepage WorkCard sits in a wide column — 9/16 blows past the viewport.
+      aspect: "4/5",
     },
     previewVideo: {
       type: "video",
       src: "/media/projects/cadushi-residents/film.mp4",
       poster: "/media/projects/cadushi-residents/film-poster.webp",
       alt: "Cadushi Residents — ROBOITH pilot preview",
-      aspect: "9/16",
+      aspect: "4/5",
     },
     heroMedia: {
       type: "image",
