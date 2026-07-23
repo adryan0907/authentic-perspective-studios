@@ -9,7 +9,8 @@ export function StudioIntro() {
   return (
     <ScrollStage
       aria-labelledby="studio-heading"
-      className="px-gutter py-section border-line border-t"
+      zIndex={6}
+      className="bg-ink px-gutter py-section border-line border-t"
     >
       <div className="grid grid-cols-1 items-center gap-12 md:grid-cols-12">
         <FadeIn className="md:col-span-5 md:col-start-1">

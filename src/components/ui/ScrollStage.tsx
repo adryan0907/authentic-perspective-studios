@@ -6,34 +6,48 @@ import { usePrefersReducedMotion } from "@/lib/hooks";
 import { cx } from "@/lib/utils";
 
 /**
- * Softens a section when it leaves the viewport centre so the active band
- * stays bright — scroll reads as directed attention rather than a long page.
+ * Sticky stacking band for the homepage. Each band pins to the top while the
+ * next one slides over it — the House of Yellow “overflowing sections” feel.
+ *
+ * Transforms live on an inner wrapper so `position: sticky` keeps working on
+ * mobile Safari and desktop (transforms on the sticky node itself break it).
  */
 export function ScrollStage({
   children,
   className,
+  zIndex = 1,
+  stack = true,
   "aria-labelledby": ariaLabelledBy,
   "aria-label": ariaLabel,
 }: {
   children: ReactNode;
   className?: string;
+  /** Stacking order — later homepage bands should pass a higher value. */
+  zIndex?: number;
+  /** Pin this band so the next section can overflow it. */
+  stack?: boolean;
   "aria-labelledby"?: string;
   "aria-label"?: string;
 }) {
   const reducedMotion = usePrefersReducedMotion();
   const ref = useRef<HTMLElement>(null);
+  const stacking = stack && !reducedMotion;
+
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start end", "end start"],
+    offset: ["start start", "end start"],
   });
 
-  const opacity = useTransform(
+  // Hold full presence while reading; only compress as the next band covers.
+  const scale = useTransform(scrollYProgress, [0, 0.72, 1], [1, 1, 0.94]);
+  const opacity = useTransform(scrollYProgress, [0, 0.78, 1], [1, 1, 0.5]);
+  const filter = useTransform(
     scrollYProgress,
-    [0, 0.1, 0.22, 0.78, 0.9, 1],
-    [0.5, 1, 1, 1, 1, 0.5],
+    [0, 0.78, 1],
+    ["brightness(1)", "brightness(1)", "brightness(0.75)"],
   );
 
-  if (reducedMotion) {
+  if (!stacking) {
     return (
       <section
         ref={ref}
@@ -47,14 +61,22 @@ export function ScrollStage({
   }
 
   return (
-    <motion.section
+    <section
       ref={ref}
-      style={{ opacity }}
-      className={cx(className)}
       aria-labelledby={ariaLabelledBy}
       aria-label={ariaLabel}
+      style={{ zIndex }}
+      className="sticky top-0 isolate"
     >
-      {children}
-    </motion.section>
+      <motion.div
+        style={{ scale, opacity, filter }}
+        className={cx(
+          "origin-top will-change-transform",
+          className,
+        )}
+      >
+        {children}
+      </motion.div>
+    </section>
   );
 }

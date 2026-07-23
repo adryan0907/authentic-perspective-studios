@@ -170,7 +170,7 @@ export default function RootLayout({
         />
         <SkipLink />
         <Header />
-        <main id="main" className="w-full max-w-full flex-1 overflow-x-clip">
+        <main id="main" className="relative w-full max-w-full flex-1 overflow-x-clip">
           {children}
         </main>
         <Footer />

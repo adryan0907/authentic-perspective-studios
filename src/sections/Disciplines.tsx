@@ -205,7 +205,8 @@ export function Disciplines() {
   return (
     <ScrollStage
       aria-labelledby="disciplines-heading"
-      className="px-gutter py-section border-line border-t"
+      zIndex={4}
+      className="bg-ink px-gutter py-section border-line border-t"
     >
       <FadeIn className="mb-14 md:mb-20">
         <h2
