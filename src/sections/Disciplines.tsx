@@ -5,6 +5,7 @@ import { Filmstrip } from "@/components/media/Filmstrip";
 import { ContactSheet } from "@/components/media/ContactSheet";
 import { ProjectCard } from "@/components/media/ProjectCard";
 import { FadeIn } from "@/components/ui/FadeIn";
+import { ScrollStage } from "@/components/ui/ScrollStage";
 import { getProject } from "@/data/projects";
 import { cx } from "@/lib/utils";
 
@@ -202,7 +203,7 @@ const disciplines = [
 
 export function Disciplines() {
   return (
-    <section
+    <ScrollStage
       aria-labelledby="disciplines-heading"
       className="px-gutter py-section border-line border-t"
     >
@@ -252,6 +253,6 @@ export function Disciplines() {
           </FadeIn>
         ))}
       </div>
-    </section>
+    </ScrollStage>
   );
 }

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { siteConfig } from "@/data/site";
 import { cx } from "@/lib/utils";
+import { KineticLabel } from "@/components/ui/KineticLabel";
 import { MobileMenu } from "./MobileMenu";
 
 /**
@@ -77,9 +78,10 @@ export function Header() {
             })}
             <Link
               href="/contact"
-              className="border-bone/30 text-bone hover:border-ember hover:bg-ember hover:text-ink rounded-sm border px-4 py-2 text-sm font-medium transition-colors"
+              data-cursor="Connect"
+              className="border-bone/30 text-bone hover:border-ember hover:bg-ember hover:text-ink inline-flex h-9 w-[9.75rem] items-center overflow-hidden rounded-sm border px-3 text-sm font-medium transition-colors"
             >
-              Start a project
+              <KineticLabel>Start a project</KineticLabel>
             </Link>
           </nav>
 

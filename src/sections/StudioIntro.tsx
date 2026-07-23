@@ -1,10 +1,13 @@
+"use client";
+
 import { EditorialImage } from "@/components/media/EditorialImage";
 import { FadeIn } from "@/components/ui/FadeIn";
 import { MagneticButton } from "@/components/ui/MagneticButton";
+import { ScrollStage } from "@/components/ui/ScrollStage";
 
 export function StudioIntro() {
   return (
-    <section
+    <ScrollStage
       aria-labelledby="studio-heading"
       className="px-gutter py-section border-line border-t"
     >
@@ -37,12 +40,17 @@ export function StudioIntro() {
             </p>
           </FadeIn>
           <FadeIn delay={0.15} className="mt-8">
-            <MagneticButton href="/about" variant="outline">
+            <MagneticButton
+              href="/about"
+              variant="outline"
+              kinetic
+              cursorLabel="About"
+            >
               About the studio
             </MagneticButton>
           </FadeIn>
         </div>
       </div>
-    </section>
+    </ScrollStage>
   );
 }

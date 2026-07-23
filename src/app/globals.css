@@ -69,6 +69,60 @@
   }
 }
 
+/* Short CTA marquee — three copies of the label, scroll by one third */
+@keyframes cta-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-33.333%);
+  }
+}
+
+.cta-marquee {
+  animation: cta-marquee 9s linear infinite;
+}
+
+/* Soft idle breath on primary CTAs — barely-there luminance pulse */
+@keyframes cta-idle-pulse {
+  0%,
+  100% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.06);
+  }
+}
+
+.cta-idle-pulse {
+  animation: cta-idle-pulse 3.6s ease-in-out infinite;
+}
+
+/* Hero scroll cue */
+@keyframes scroll-cue {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 0.9;
+    transform: translateY(6px);
+  }
+}
+
+.scroll-cue {
+  animation: scroll-cue 2.2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cta-marquee,
+  .cta-idle-pulse,
+  .scroll-cue {
+    animation: none;
+  }
+}
+
 :root {
   color-scheme: dark;
 }

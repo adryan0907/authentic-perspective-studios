@@ -1,4 +1,7 @@
+"use client";
+
 import { FadeIn } from "@/components/ui/FadeIn";
+import { ScrollStage } from "@/components/ui/ScrollStage";
 
 /**
  * Collaboration strip.
@@ -21,9 +24,9 @@ const logoSlots = [
 
 export function Collaborations() {
   return (
-    <section
+    <ScrollStage
       aria-labelledby="collab-heading"
-      className="px-gutter border-line border-t py-16 md:py-20"
+      className="bg-ink-2 px-gutter border-line border-t py-16 md:py-20"
     >
       <FadeIn>
         <h2
@@ -45,6 +48,6 @@ export function Collaborations() {
           ))}
         </ul>
       </FadeIn>
-    </section>
+    </ScrollStage>
   );
 }

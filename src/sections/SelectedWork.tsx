@@ -1,7 +1,10 @@
+"use client";
+
 import Link from "next/link";
 import { featuredProjects } from "@/data/projects";
 import { ProjectCard } from "@/components/media/ProjectCard";
 import { FadeIn } from "@/components/ui/FadeIn";
+import { ScrollStage } from "@/components/ui/ScrollStage";
 import { cx } from "@/lib/utils";
 
 /**
@@ -16,15 +19,22 @@ export function SelectedWork() {
   }
 
   return (
-    <section aria-labelledby="work-heading" className="px-gutter py-section">
+    <ScrollStage
+      aria-labelledby="work-heading"
+      className="bg-ink-2 px-gutter py-section"
+    >
       <FadeIn className="mb-14 flex flex-wrap items-end justify-between gap-6 md:mb-20">
         <div>
-          <h2 id="work-heading" className="text-h1 font-sans font-black tracking-tight uppercase">
+          <h2
+            id="work-heading"
+            className="text-h1 font-sans font-black tracking-tight uppercase"
+          >
             The work
           </h2>
         </div>
         <Link
           href="/work"
+          data-cursor="Archive"
           className="text-bone/80 hover:text-ember border-line hover:border-ember mb-2 border-b pb-1 text-sm transition-colors"
         >
           Browse the full archive →
@@ -72,6 +82,6 @@ export function SelectedWork() {
           );
         })}
       </div>
-    </section>
+    </ScrollStage>
   );
 }

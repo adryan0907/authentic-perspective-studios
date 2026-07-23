@@ -6,8 +6,8 @@ import { useMediaQuery, usePrefersReducedMotion } from "@/lib/hooks";
 import { spring } from "@/lib/motion";
 
 /**
- * A small brand cursor that grows into a "View project" badge over elements
- * marked with data-cursor="view". Purely decorative: it only renders on
+ * A small brand cursor that grows into a labelled badge over elements
+ * marked with data-cursor. Purely decorative: it only renders on
  * fine-pointer devices, disappears with reduced motion, and never replaces
  * the native cursor for interaction.
  */

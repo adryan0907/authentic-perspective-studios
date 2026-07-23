@@ -178,8 +178,10 @@ export function Hero() {
           {...enter(0.7)}
           className="pointer-events-auto mt-9 flex flex-wrap items-center gap-4"
         >
-          <MagneticButton href="/work">View selected work</MagneticButton>
-          <MagneticButton href="/contact" variant="outline">
+          <MagneticButton href="/work" cursorLabel="Work">
+            View selected work
+          </MagneticButton>
+          <MagneticButton href="/contact" variant="outline" kinetic cursorLabel="Connect">
             Start a project
           </MagneticButton>
         </motion.div>
@@ -190,12 +192,27 @@ export function Hero() {
         <button
           type="button"
           onClick={() => setPaused((p) => !p)}
+          data-cursor={paused ? "Play" : "Pause"}
           className="border-bone/25 text-bone/80 hover:border-ember hover:text-bone bg-ink/40 flex h-11 items-center gap-2 rounded-sm border px-3 font-mono text-[0.6rem] tracking-widest uppercase backdrop-blur-sm"
         >
           <span aria-hidden>{paused ? "▶" : "❚❚"}</span>
           {paused ? "Play reel" : "Pause reel"}
         </button>
       </div>
+
+      {/* Scroll cue — quiet pulse that invites the next beat */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.6, duration: duration.slow }}
+        aria-hidden
+        className="pointer-events-none absolute bottom-6 left-1/2 z-20 hidden -translate-x-1/2 flex-col items-center gap-2 md:flex"
+      >
+        <span className="text-bone/40 font-mono text-[0.55rem] tracking-[0.28em] uppercase">
+          Scroll
+        </span>
+        <span className="scroll-cue border-bone/40 block h-8 w-px border-l" />
+      </motion.div>
 
       {/* Interaction cue — desktop only */}
       <motion.p

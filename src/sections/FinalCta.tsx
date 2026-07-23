@@ -61,7 +61,9 @@ export function FinalCta() {
           </p>
         </FadeIn>
         <FadeIn delay={0.35} className="mt-10">
-          <MagneticButton href="/contact">Start a project</MagneticButton>
+          <MagneticButton href="/contact" cursorLabel="Connect">
+            Start a project
+          </MagneticButton>
         </FadeIn>
       </div>
     </section>

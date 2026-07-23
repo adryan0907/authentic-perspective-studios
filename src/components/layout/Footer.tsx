@@ -81,6 +81,7 @@ export function Footer() {
               </a>
               <Link
                 href="/contact"
+                data-cursor="Connect"
                 className="text-ember hover:text-bone text-sm transition-colors"
               >
                 Start a project

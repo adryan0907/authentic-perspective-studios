@@ -1,9 +1,15 @@
+"use client";
+
 import { TextReveal } from "@/components/ui/TextReveal";
 import { FadeIn } from "@/components/ui/FadeIn";
+import { ScrollStage } from "@/components/ui/ScrollStage";
 
 export function PerspectiveStatement() {
   return (
-    <section aria-labelledby="statement-heading" className="px-gutter py-section">
+    <ScrollStage
+      aria-labelledby="statement-heading"
+      className="px-gutter py-section"
+    >
       <div className="mx-auto max-w-5xl">
         <h2 id="statement-heading" className="sr-only">
           Studio philosophy
@@ -24,6 +30,6 @@ export function PerspectiveStatement() {
           </p>
         </FadeIn>
       </div>
-    </section>
+    </ScrollStage>
   );
 }

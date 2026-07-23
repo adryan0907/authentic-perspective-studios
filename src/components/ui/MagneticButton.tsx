@@ -6,6 +6,7 @@ import { motion, useMotionValue, useSpring } from "motion/react";
 import { spring } from "@/lib/motion";
 import { cx } from "@/lib/utils";
 import { usePrefersReducedMotion } from "@/lib/hooks";
+import { isKineticText, KineticLabel } from "./KineticLabel";
 
 const variants = {
   primary:
@@ -15,18 +16,24 @@ const variants = {
 } as const;
 
 /**
- * CTA link that subtly leans toward the pointer. The magnetic effect is
- * decorative only — with reduced motion or on touch it is a plain link.
+ * CTA link that subtly leans toward the pointer. Primary buttons can run a
+ * quiet kinetic marquee so chrome still breathes when the page is idle.
  */
 export function MagneticButton({
   href,
   children,
   variant = "primary",
+  kinetic,
+  cursorLabel,
   className,
 }: {
   href: string;
   children: ReactNode;
   variant?: keyof typeof variants;
+  /** Continuous label marquee. Defaults on for primary string labels. */
+  kinetic?: boolean;
+  /** Custom cursor badge; defaults to the string label when available. */
+  cursorLabel?: string;
   className?: string;
 }) {
   const reducedMotion = usePrefersReducedMotion();
@@ -35,6 +42,11 @@ export function MagneticButton({
   const y = useMotionValue(0);
   const sx = useSpring(x, spring.soft);
   const sy = useSpring(y, spring.soft);
+
+  const useKinetic =
+    kinetic ?? (variant === "primary" && isKineticText(children));
+  const label = isKineticText(children) ? children : undefined;
+  const cursor = cursorLabel ?? label;
 
   const onPointerMove = (event: React.PointerEvent) => {
     if (reducedMotion || event.pointerType !== "mouse" || !ref.current) return;
@@ -58,13 +70,16 @@ export function MagneticButton({
     >
       <Link
         href={href}
+        data-cursor={cursor || undefined}
         className={cx(
-          "inline-flex min-h-12 items-center justify-center rounded-sm px-7 py-3 text-base transition-colors duration-300",
+          "inline-flex min-h-12 items-center justify-center overflow-hidden rounded-sm px-7 py-3 text-base transition-colors duration-300",
           variants[variant],
+          variant === "primary" && !reducedMotion && "cta-idle-pulse",
+          useKinetic && label && "w-[min(100%,14.5rem)]",
           className,
         )}
       >
-        {children}
+        {useKinetic && label ? <KineticLabel>{label}</KineticLabel> : children}
       </Link>
     </motion.div>
   );

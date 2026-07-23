@@ -1,7 +1,12 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useScroll, useSpring } from "motion/react";
+import {
+  motion,
+  useScroll,
+  useSpring,
+  useTransform,
+} from "motion/react";
 import { FadeIn } from "@/components/ui/FadeIn";
 import { spring } from "@/lib/motion";
 import { usePrefersReducedMotion } from "@/lib/hooks";
@@ -34,7 +39,7 @@ const phases = [
 ];
 
 /**
- * The studio process as four phases with a scroll-linked progress line.
+ * The studio process as five phases with a scroll-linked progress line.
  * Normal scrolling is never intercepted — the line simply reacts to it.
  */
 export function Process() {
@@ -46,11 +51,22 @@ export function Process() {
   });
   const progress = useSpring(scrollYProgress, spring.soft);
 
+  const { scrollYProgress: stageProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
+  const stageOpacity = useTransform(
+    stageProgress,
+    [0, 0.1, 0.22, 0.78, 0.9, 1],
+    [0.5, 1, 1, 1, 1, 0.5],
+  );
+
   return (
-    <section
+    <motion.section
       ref={sectionRef}
+      style={reducedMotion ? undefined : { opacity: stageOpacity }}
       aria-labelledby="process-heading"
-      className="px-gutter py-section border-line border-t"
+      className="bg-ink-3 px-gutter py-section border-line border-t"
     >
       <FadeIn className="mb-14 md:mb-20">
         <h2
@@ -68,7 +84,10 @@ export function Process() {
 
       <div className="relative md:ml-[10%]">
         {/* Scroll-reactive progress line */}
-        <div aria-hidden className="bg-line absolute top-0 bottom-0 left-[7px] w-px md:left-[9px]">
+        <div
+          aria-hidden
+          className="bg-line absolute top-0 bottom-0 left-[7px] w-px md:left-[9px]"
+        >
           <motion.div
             className="bg-ember absolute inset-x-0 top-0 origin-top"
             style={{
@@ -83,7 +102,7 @@ export function Process() {
             <li key={phase.title} className="relative pl-10 md:pl-16">
               <span
                 aria-hidden
-                className="border-ember bg-ink absolute top-2 left-0 block h-4 w-4 rounded-full border-2 md:h-5 md:w-5"
+                className="border-ember bg-ink-3 absolute top-2 left-0 block h-4 w-4 rounded-full border-2 md:h-5 md:w-5"
               />
               <FadeIn>
                 <h3 className="text-h2 font-sans font-bold tracking-tight">
@@ -97,6 +116,6 @@ export function Process() {
           ))}
         </ol>
       </div>
-    </section>
+    </motion.section>
   );
 }
