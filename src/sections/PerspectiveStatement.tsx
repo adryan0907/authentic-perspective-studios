@@ -8,7 +8,6 @@ export function PerspectiveStatement() {
   return (
     <ScrollStage
       aria-labelledby="statement-heading"
-      zIndex={2}
       className="bg-ink px-gutter py-section"
     >
       <div className="mx-auto max-w-5xl">

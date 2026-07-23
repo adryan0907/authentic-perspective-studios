@@ -50,7 +50,6 @@ export function Process() {
   return (
     <ScrollStage
       aria-labelledby="process-heading"
-      zIndex={5}
       className="bg-ink-3 px-gutter py-section border-line border-t"
     >
       <div ref={contentRef}>

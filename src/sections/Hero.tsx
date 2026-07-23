@@ -1,7 +1,7 @@
 "use client";
 
-import { useRef, useState } from "react";
-import { motion, useScroll, useTransform } from "motion/react";
+import { useState } from "react";
+import { motion } from "motion/react";
 import { heroShowreel, heroShowreelRaw } from "@/data/hero";
 import { duration, easing, stagger } from "@/lib/motion";
 import { cx } from "@/lib/utils";
@@ -104,19 +104,6 @@ export function Hero() {
   const reducedMotion = usePrefersReducedMotion();
   const [paused, setPaused] = useState(false);
   const [revealPlaying, setRevealPlaying] = useState(false);
-  const sectionRef = useRef<HTMLElement>(null);
-
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start start", "end start"],
-  });
-  const scale = useTransform(scrollYProgress, [0, 0.72, 1], [1, 1, 0.94]);
-  const opacity = useTransform(scrollYProgress, [0, 0.78, 1], [1, 1, 0.5]);
-  const filter = useTransform(
-    scrollYProgress,
-    [0, 0.78, 1],
-    ["brightness(1)", "brightness(1)", "brightness(0.75)"],
-  );
 
   const enter = (delay: number) => ({
     initial: { opacity: 0, y: reducedMotion ? 0 : 28 },
@@ -126,33 +113,22 @@ export function Hero() {
 
   return (
     <section
-      ref={sectionRef}
       aria-label="Introduction"
-      style={{ zIndex: 1 }}
-      className={
-        reducedMotion
-          ? "relative flex min-h-[100svh] flex-col justify-end overflow-hidden bg-ink"
-          : "sticky top-0 isolate flex min-h-[100svh] flex-col justify-end overflow-hidden bg-ink"
-      }
+      className="relative flex min-h-[100svh] flex-col justify-end overflow-hidden bg-ink"
     >
-      <motion.div
-        style={reducedMotion ? undefined : { scale, opacity, filter }}
-        className="absolute inset-0 origin-top will-change-transform"
-      >
-        <PerspectiveLens
-          base={<GradeLayer paused={paused} />}
-          reveal={<RawLayer paused={paused} playing={revealPlaying} />}
-          baseLabel="Final grade"
-          revealLabel="Raw footage"
-          onRevealEngage={() => setRevealPlaying(true)}
-        />
+      <PerspectiveLens
+        base={<GradeLayer paused={paused} />}
+        reveal={<RawLayer paused={paused} playing={revealPlaying} />}
+        baseLabel="Final grade"
+        revealLabel="Raw footage"
+        onRevealEngage={() => setRevealPlaying(true)}
+      />
 
-        {/* Legibility scrim — never blocks the lens */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-3/5 bg-gradient-to-t from-black/80 via-black/30 to-transparent"
-        />
-      </motion.div>
+      {/* Legibility scrim — never blocks the lens */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-3/5 bg-gradient-to-t from-black/80 via-black/30 to-transparent"
+      />
 
       <div className="px-gutter pointer-events-none relative z-20 pb-14 md:pb-20">
         <motion.p

@@ -6,48 +6,38 @@ import { usePrefersReducedMotion } from "@/lib/hooks";
 import { cx } from "@/lib/utils";
 
 /**
- * Sticky stacking band for the homepage. Each band pins to the top while the
- * next one slides over it — the House of Yellow “overflowing sections” feel.
- *
- * Transforms live on an inner wrapper so `position: sticky` keeps working on
- * mobile Safari and desktop (transforms on the sticky node itself break it).
+ * Homepage section wrapper. Keeps normal document scroll so every band can be
+ * read top-to-bottom; optionally softens slightly as it leaves the viewport.
  */
 export function ScrollStage({
   children,
   className,
-  zIndex = 1,
-  stack = true,
   "aria-labelledby": ariaLabelledBy,
   "aria-label": ariaLabel,
 }: {
   children: ReactNode;
   className?: string;
-  /** Stacking order — later homepage bands should pass a higher value. */
+  /** @deprecated Ignored — kept so existing call sites type-check during cleanup. */
   zIndex?: number;
-  /** Pin this band so the next section can overflow it. */
+  /** @deprecated Ignored — sticky stacking was removed for scrollability. */
   stack?: boolean;
   "aria-labelledby"?: string;
   "aria-label"?: string;
 }) {
   const reducedMotion = usePrefersReducedMotion();
   const ref = useRef<HTMLElement>(null);
-  const stacking = stack && !reducedMotion;
-
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start start", "end start"],
+    offset: ["start end", "end start"],
   });
 
-  // Hold full presence while reading; only compress as the next band covers.
-  const scale = useTransform(scrollYProgress, [0, 0.72, 1], [1, 1, 0.94]);
-  const opacity = useTransform(scrollYProgress, [0, 0.78, 1], [1, 1, 0.5]);
-  const filter = useTransform(
+  const opacity = useTransform(
     scrollYProgress,
-    [0, 0.78, 1],
-    ["brightness(1)", "brightness(1)", "brightness(0.75)"],
+    [0, 0.08, 0.92, 1],
+    [0.85, 1, 1, 0.85],
   );
 
-  if (!stacking) {
+  if (reducedMotion) {
     return (
       <section
         ref={ref}
@@ -61,22 +51,14 @@ export function ScrollStage({
   }
 
   return (
-    <section
+    <motion.section
       ref={ref}
+      style={{ opacity }}
+      className={cx("relative", className)}
       aria-labelledby={ariaLabelledBy}
       aria-label={ariaLabel}
-      style={{ zIndex }}
-      className="sticky top-0 isolate"
     >
-      <motion.div
-        style={{ scale, opacity, filter }}
-        className={cx(
-          "origin-top will-change-transform",
-          className,
-        )}
-      >
-        {children}
-      </motion.div>
-    </section>
+      {children}
+    </motion.section>
   );
 }
