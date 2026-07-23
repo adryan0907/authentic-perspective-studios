@@ -181,7 +181,7 @@ export function Hero() {
           <MagneticButton href="/work" cursorLabel="Work">
             View selected work
           </MagneticButton>
-          <MagneticButton href="/contact" variant="outline" kinetic cursorLabel="Connect">
+          <MagneticButton href="/contact" variant="outline" cursorLabel="Connect">
             Start a project
           </MagneticButton>
         </motion.div>

@@ -43,7 +43,6 @@ export function StudioIntro() {
             <MagneticButton
               href="/about"
               variant="outline"
-              kinetic
               cursorLabel="About"
             >
               About the studio

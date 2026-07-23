@@ -6,7 +6,7 @@ import { motion, useMotionValue, useSpring } from "motion/react";
 import { spring } from "@/lib/motion";
 import { cx } from "@/lib/utils";
 import { usePrefersReducedMotion } from "@/lib/hooks";
-import { isKineticText, KineticLabel } from "./KineticLabel";
+import { isKineticText } from "./KineticLabel";
 
 const variants = {
   primary:
@@ -16,22 +16,19 @@ const variants = {
 } as const;
 
 /**
- * CTA link that subtly leans toward the pointer. Primary buttons can run a
- * quiet kinetic marquee so chrome still breathes when the page is idle.
+ * CTA link that subtly leans toward the pointer. Labels stay static and
+ * readable — idle motion comes from a soft pulse on primary buttons only.
  */
 export function MagneticButton({
   href,
   children,
   variant = "primary",
-  kinetic,
   cursorLabel,
   className,
 }: {
   href: string;
   children: ReactNode;
   variant?: keyof typeof variants;
-  /** Continuous label marquee. Defaults on for primary string labels. */
-  kinetic?: boolean;
   /** Custom cursor badge; defaults to the string label when available. */
   cursorLabel?: string;
   className?: string;
@@ -43,8 +40,6 @@ export function MagneticButton({
   const sx = useSpring(x, spring.soft);
   const sy = useSpring(y, spring.soft);
 
-  const useKinetic =
-    kinetic ?? (variant === "primary" && isKineticText(children));
   const label = isKineticText(children) ? children : undefined;
   const cursor = cursorLabel ?? label;
 
@@ -72,14 +67,13 @@ export function MagneticButton({
         href={href}
         data-cursor={cursor || undefined}
         className={cx(
-          "inline-flex min-h-12 max-w-full items-center justify-center overflow-hidden rounded-sm px-7 py-3 text-base transition-colors duration-300",
+          "inline-flex min-h-12 max-w-full items-center justify-center whitespace-nowrap rounded-sm px-6 py-3 text-base transition-colors duration-300 sm:px-7",
           variants[variant],
           variant === "primary" && !reducedMotion && "cta-idle-pulse",
-          useKinetic && label && "w-56",
           className,
         )}
       >
-        {useKinetic && label ? <KineticLabel>{label}</KineticLabel> : children}
+        {children}
       </Link>
     </motion.div>
   );

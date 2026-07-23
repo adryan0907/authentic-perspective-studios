@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation";
 import { motion } from "motion/react";
 import { siteConfig } from "@/data/site";
 import { cx } from "@/lib/utils";
-import { KineticLabel } from "@/components/ui/KineticLabel";
 import { usePrefersReducedMotion } from "@/lib/hooks";
 import { MobileMenu } from "./MobileMenu";
 
@@ -137,9 +136,9 @@ export function Header() {
             <Link
               href="/contact"
               data-cursor="Connect"
-              className="bg-ember text-ink hover:bg-bone hidden h-10 w-[10.5rem] items-center justify-center overflow-hidden rounded-sm text-sm font-semibold transition-colors duration-300 md:inline-flex"
+              className="bg-ember text-ink hover:bg-bone hidden h-10 items-center justify-center rounded-sm px-4 text-sm font-semibold transition-colors duration-300 md:inline-flex"
             >
-              <KineticLabel>Start a project</KineticLabel>
+              Start a project
             </Link>
 
             <button
